@@ -1,3 +1,3 @@
 """Calculator"""
 
-print("hohohoho")
+print("hohoho")

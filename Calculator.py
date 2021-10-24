@@ -1,3 +1,3 @@
 """Calculator"""
 
-print("calculaotdf")
+print("calculator")

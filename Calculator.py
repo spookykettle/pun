@@ -32,8 +32,15 @@ class Ui_SimpleCalculator(object):
         font.setPointSize(25)
         self.p7.setFont(font)
         self.p7.setObjectName("p7")
-
-        self.p7.setStyleSheet("background-color: #e6e6e6;")
+        self.p7.setStyleSheet("QPushButton"
+                    "{"
+                    "background-color : #e6e6e6;"
+                    "}"
+                    "QPushButton::hover"
+                    "{"
+                    "border :2px solid ;"
+                    "border-color : #418abb; "
+                    "}")
         self.p8 = QtWidgets.QPushButton(self.centralwidget, clicked = lambda: self.press_it("8"))
         self.p8.setGeometry(QtCore.QRect(90, 90, 53, 53))
         font = QtGui.QFont()
@@ -41,7 +48,15 @@ class Ui_SimpleCalculator(object):
         font.setPointSize(25)
         self.p8.setFont(font)
         self.p8.setObjectName("p8")
-        self.p8.setStyleSheet("background-color: #e6e6e6;")
+        self.p8.setStyleSheet("QPushButton"
+                    "{"
+                    "background-color : #e6e6e6;"
+                    "}"
+                    "QPushButton::hover"
+                    "{"
+                    "border :2px solid ;"
+                    "border-color : #418abb; "
+                    "}")
         self.p9 = QtWidgets.QPushButton(self.centralwidget, clicked = lambda: self.press_it("9"))
         self.p9.setGeometry(QtCore.QRect(150, 90, 53, 53))
         font = QtGui.QFont()
@@ -49,7 +64,15 @@ class Ui_SimpleCalculator(object):
         font.setPointSize(25)
         self.p9.setFont(font)
         self.p9.setObjectName("p9")
-        self.p9.setStyleSheet("background-color: #e6e6e6;")
+        self.p9.setStyleSheet("QPushButton"
+                    "{"
+                    "background-color : #e6e6e6;"
+                    "}"
+                    "QPushButton::hover"
+                    "{"
+                    "border :2px solid ;"
+                    "border-color : #418abb; "
+                    "}")
         self.pslash = QtWidgets.QPushButton(self.centralwidget, clicked = lambda: self.press_it("/"))
         self.pslash.setGeometry(QtCore.QRect(220, 90, 53, 53))
         font = QtGui.QFont()
@@ -57,7 +80,15 @@ class Ui_SimpleCalculator(object):
         font.setPointSize(25)
         self.pslash.setFont(font)
         self.pslash.setObjectName("pslash")
-        self.pslash.setStyleSheet("background-color: #e6e6e6;")
+        self.pslash.setStyleSheet("QPushButton"
+                    "{"
+                    "background-color : #e6e6e6;"
+                    "}"
+                    "QPushButton::hover"
+                    "{"
+                    "border :2px solid ;"
+                    "border-color : #418abb; "
+                    "}")
         self.pmul = QtWidgets.QPushButton(self.centralwidget, clicked = lambda: self.press_it("*"))
         self.pmul.setGeometry(QtCore.QRect(220, 150, 53, 53))
         font = QtGui.QFont()
@@ -65,7 +96,15 @@ class Ui_SimpleCalculator(object):
         font.setPointSize(25)
         self.pmul.setFont(font)
         self.pmul.setObjectName("pmul")
-        self.pmul.setStyleSheet("background-color: #e6e6e6;")
+        self.pmul.setStyleSheet("QPushButton"
+                    "{"
+                    "background-color : #e6e6e6;"
+                    "}"
+                    "QPushButton::hover"
+                    "{"
+                    "border :2px solid ;"
+                    "border-color : #418abb; "
+                    "}")
         self.pminus = QtWidgets.QPushButton(self.centralwidget, clicked = lambda: self.press_it("-"))
         self.pminus.setGeometry(QtCore.QRect(220, 210, 53, 53))
         font = QtGui.QFont()
@@ -73,7 +112,15 @@ class Ui_SimpleCalculator(object):
         font.setPointSize(25)
         self.pminus.setFont(font)
         self.pminus.setObjectName("pminus")
-        self.pminus.setStyleSheet("background-color: #e6e6e6;")
+        self.pminus.setStyleSheet("QPushButton"
+                    "{"
+                    "background-color : #e6e6e6;"
+                    "}"
+                    "QPushButton::hover"
+                    "{"
+                    "border :2px solid ;"
+                    "border-color : #418abb; "
+                    "}")
         self.pplus = QtWidgets.QPushButton(self.centralwidget, clicked = lambda: self.press_it("+"))
         self.pplus.setGeometry(QtCore.QRect(220, 270, 53, 53))
         font = QtGui.QFont()
@@ -81,7 +128,15 @@ class Ui_SimpleCalculator(object):
         font.setPointSize(25)
         self.pplus.setFont(font)
         self.pplus.setObjectName("pplus")
-        self.pplus.setStyleSheet("background-color: #e6e6e6;")
+        self.pplus.setStyleSheet("QPushButton"
+                    "{"
+                    "background-color : #e6e6e6;"
+                    "}"
+                    "QPushButton::hover"
+                    "{"
+                    "border :2px solid ;"
+                    "border-color : #418abb; "
+                    "}")
         self.pclear = QtWidgets.QPushButton(self.centralwidget, clicked = lambda: self.press_it("C"))
         self.pclear.setGeometry(QtCore.QRect(152, 330, 121, 53))
         font = QtGui.QFont()
@@ -89,7 +144,15 @@ class Ui_SimpleCalculator(object):
         font.setPointSize(25)
         self.pclear.setFont(font)
         self.pclear.setObjectName("pclear")
-        self.pclear.setStyleSheet("background-color: #e6e6e6;")
+        self.pclear.setStyleSheet("QPushButton"
+                    "{"
+                    "background-color : #e6e6e6;"
+                    "}"
+                    "QPushButton::hover"
+                    "{"
+                    "border :2px solid ;"
+                    "border-color : #418abb; "
+                    "}")
         self.p4 = QtWidgets.QPushButton(self.centralwidget, clicked = lambda: self.press_it("4"))
         self.p4.setGeometry(QtCore.QRect(30, 150, 53, 53))
         font = QtGui.QFont()
@@ -97,7 +160,15 @@ class Ui_SimpleCalculator(object):
         font.setPointSize(25)
         self.p4.setFont(font)
         self.p4.setObjectName("p4")
-        self.p4.setStyleSheet("background-color: #e6e6e6;")
+        self.p4.setStyleSheet("QPushButton"
+                    "{"
+                    "background-color : #e6e6e6;"
+                    "}"
+                    "QPushButton::hover"
+                    "{"
+                    "border :2px solid ;"
+                    "border-color : #418abb; "
+                    "}")
         self.p5 = QtWidgets.QPushButton(self.centralwidget, clicked = lambda: self.press_it("5"))
         self.p5.setGeometry(QtCore.QRect(90, 150, 53, 53))
         font = QtGui.QFont()
@@ -105,7 +176,15 @@ class Ui_SimpleCalculator(object):
         font.setPointSize(25)
         self.p5.setFont(font)
         self.p5.setObjectName("p5")
-        self.p5.setStyleSheet("background-color: #e6e6e6;")
+        self.p5.setStyleSheet("QPushButton"
+                    "{"
+                    "background-color : #e6e6e6;"
+                    "}"
+                    "QPushButton::hover"
+                    "{"
+                    "border :2px solid ;"
+                    "border-color : #418abb; "
+                    "}")
         self.p6 = QtWidgets.QPushButton(self.centralwidget, clicked = lambda: self.press_it("6"))
         self.p6.setGeometry(QtCore.QRect(150, 150, 53, 53))
         font = QtGui.QFont()
@@ -113,7 +192,15 @@ class Ui_SimpleCalculator(object):
         font.setPointSize(25)
         self.p6.setFont(font)
         self.p6.setObjectName("p6")
-        self.p6.setStyleSheet("background-color: #e6e6e6;")
+        self.p6.setStyleSheet("QPushButton"
+                    "{"
+                    "background-color : #e6e6e6;"
+                    "}"
+                    "QPushButton::hover"
+                    "{"
+                    "border :2px solid ;"
+                    "border-color : #418abb; "
+                    "}")
         self.p2 = QtWidgets.QPushButton(self.centralwidget, clicked = lambda: self.press_it("2"))
         self.p2.setGeometry(QtCore.QRect(90, 210, 53, 53))
         font = QtGui.QFont()
@@ -121,7 +208,15 @@ class Ui_SimpleCalculator(object):
         font.setPointSize(25)
         self.p2.setFont(font)
         self.p2.setObjectName("p2")
-        self.p2.setStyleSheet("background-color: #e6e6e6;")
+        self.p2.setStyleSheet("QPushButton"
+                    "{"
+                    "background-color : #e6e6e6;"
+                    "}"
+                    "QPushButton::hover"
+                    "{"
+                    "border :2px solid ;"
+                    "border-color : #418abb; "
+                    "}")
         self.p1 = QtWidgets.QPushButton(self.centralwidget, clicked = lambda: self.press_it("1"))
         self.p1.setGeometry(QtCore.QRect(30, 210, 53, 53))
         font = QtGui.QFont()
@@ -129,7 +224,15 @@ class Ui_SimpleCalculator(object):
         font.setPointSize(25)
         self.p1.setFont(font)
         self.p1.setObjectName("p1")
-        self.p1.setStyleSheet("background-color: #e6e6e6;")
+        self.p1.setStyleSheet("QPushButton"
+                    "{"
+                    "background-color : #e6e6e6;"
+                    "}"
+                    "QPushButton::hover"
+                    "{"
+                    "border :2px solid ;"
+                    "border-color : #418abb; "
+                    "}")
         self.p3 = QtWidgets.QPushButton(self.centralwidget, clicked = lambda: self.press_it("3"))
         self.p3.setGeometry(QtCore.QRect(150, 210, 53, 53))
         font = QtGui.QFont()
@@ -137,7 +240,15 @@ class Ui_SimpleCalculator(object):
         font.setPointSize(25)
         self.p3.setFont(font)
         self.p3.setObjectName("p3")
-        self.p3.setStyleSheet("background-color: #e6e6e6;")
+        self.p3.setStyleSheet("QPushButton"
+                    "{"
+                    "background-color : #e6e6e6;"
+                    "}"
+                    "QPushButton::hover"
+                    "{"
+                    "border :2px solid ;"
+                    "border-color : #418abb; "
+                    "}")
         self.p0 = QtWidgets.QPushButton(self.centralwidget, clicked = lambda: self.press_it("0"))
         self.p0.setGeometry(QtCore.QRect(90, 270, 53, 53))
         font = QtGui.QFont()
@@ -145,7 +256,15 @@ class Ui_SimpleCalculator(object):
         font.setPointSize(25)
         self.p0.setFont(font)
         self.p0.setObjectName("p0")
-        self.p0.setStyleSheet("background-color: #e6e6e6;")
+        self.p0.setStyleSheet("QPushButton"
+                    "{"
+                    "background-color : #e6e6e6;"
+                    "}"
+                    "QPushButton::hover"
+                    "{"
+                    "border :2px solid ;"
+                    "border-color : #418abb; "
+                    "}")
         self.pequal = QtWidgets.QPushButton(self.centralwidget, clicked = lambda: self.math_it())
         self.pequal.setGeometry(QtCore.QRect(30, 270, 53, 53))
         font = QtGui.QFont()
@@ -153,7 +272,15 @@ class Ui_SimpleCalculator(object):
         font.setPointSize(25)
         self.pequal.setFont(font)
         self.pequal.setObjectName("pequal")
-        self.pequal.setStyleSheet("background-color: #e6e6e6;")
+        self.pequal.setStyleSheet("QPushButton"
+                    "{"
+                    "background-color : #e6e6e6;"
+                    "}"
+                    "QPushButton::hover"
+                    "{"
+                    "border :2px solid ;"
+                    "border-color : #418abb; "
+                    "}")
         self.pdot = QtWidgets.QPushButton(self.centralwidget, clicked = lambda: self.dot_it())
         self.pdot.setGeometry(QtCore.QRect(150, 270, 53, 53))
         font = QtGui.QFont()
@@ -161,7 +288,15 @@ class Ui_SimpleCalculator(object):
         font.setPointSize(25)
         self.pdot.setFont(font)
         self.pdot.setObjectName("pdot")
-        self.pdot.setStyleSheet("background-color: #e6e6e6;")
+        self.pdot.setStyleSheet("QPushButton"
+                    "{"
+                    "background-color : #e6e6e6;"
+                    "}"
+                    "QPushButton::hover"
+                    "{"
+                    "border :2px solid ;"
+                    "border-color : #418abb; "
+                    "}")
         self.pclearentry = QtWidgets.QPushButton(self.centralwidget, clicked = lambda: self.remove_ce())
         self.pclearentry.setGeometry(QtCore.QRect(30, 330, 111, 53))
         font = QtGui.QFont()
@@ -169,7 +304,15 @@ class Ui_SimpleCalculator(object):
         font.setPointSize(25)
         self.pclearentry.setFont(font)
         self.pclearentry.setObjectName("pclearentry")
-        self.pclearentry.setStyleSheet("background-color: #e6e6e6;")
+        self.pclearentry.setStyleSheet("QPushButton"
+                    "{"
+                    "background-color : #e6e6e6;"
+                    "}"
+                    "QPushButton::hover"
+                    "{"
+                    "border :2px solid ;"
+                    "border-color : #418abb; "
+                    "}")
         SimpleCalculator.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(SimpleCalculator)
         self.statusbar.setObjectName("statusbar")

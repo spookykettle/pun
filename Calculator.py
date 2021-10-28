@@ -2,6 +2,8 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+# Ref https://www.youtube.com/watch?v=YEOOcrm5ulA
+
 class Ui_SimpleCalculator(object):
     def setupUi(self, SimpleCalculator):
         SimpleCalculator.setObjectName("SimpleCalculator")

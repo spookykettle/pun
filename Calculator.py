@@ -25,6 +25,27 @@ class Ui_SimpleCalculator(object):
         self.outputLabel.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.outputLabel.setObjectName("outputLabel")
         self.outputLabel.setStyleSheet("background-color: white")
+
+        self.outputLabel2 = QtWidgets.QLabel(self.centralwidget)
+        self.outputLabel2.setGeometry(QtCore.QRect(40, 370, 241, 41))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.outputLabel2.setFont(font)
+        self.outputLabel2.setStyleSheet("QLabel"
+                    "{"
+                    "color : rgb(135,206,234);"
+                    "}"
+                    )
+        self.outputLabel2.setAutoFillBackground(False)
+        self.outputLabel2.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.outputLabel2.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.outputLabel2.setLineWidth(1)
+        self.outputLabel2.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.outputLabel2.setObjectName("outputLabel2")
+
         self.p7 = QtWidgets.QPushButton(self.centralwidget, clicked = lambda: self.press_it("7"))
         self.p7.setGeometry(QtCore.QRect(30, 90, 53, 53))
         font = QtGui.QFont()
@@ -313,6 +334,7 @@ class Ui_SimpleCalculator(object):
                     "border :2px solid ;"
                     "border-color : #418abb; "
                     "}")
+        
         SimpleCalculator.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(SimpleCalculator)
         self.statusbar.setObjectName("statusbar")
@@ -324,22 +346,32 @@ class Ui_SimpleCalculator(object):
     # operation
     def math_it(self):
         screen = self.outputLabel.text()
+        screen2 = self.outputLabel2.text()
         try:    
             # math
             answer = eval(screen)
+            answer2 = eval(screen2)
             # output answer
             if answer - int(answer) == 0:
                 self.outputLabel.setText(str(answer))
             else:
                 answer = round(answer, 10)
                 self.outputLabel.setText(str(answer))
+
+            if answer2 - int(answer2) == 0:
+                self.outputLabel2.setText(str(answer2))
+            else:
+                answer2 = round(answer2, 10)
+                self.outputLabel2.setText(str(answer2))
         except:
             # output ERROR
             self.outputLabel.setText("ERROR")
+            self.outputLabel2.setText("ERROR")
 
     # remove entry CE
     def remove_ce(self):
         screen = self.outputLabel.text()
+        screen2 = self.outputLabel2.text()
         # remove the last set of number
         if "+" in screen or "-" in screen or "*" in screen or "/" in screen:
             while True:
@@ -350,25 +382,48 @@ class Ui_SimpleCalculator(object):
                         screen += "1"
                     break
                 screen = screen[:-1]
+        if "+" in screen2 or "-" in screen2 or "*" in screen2 or "/" in screen2:
+            while True:
+                if screen2[-1] in ("+", "-", "/", "*"):
+                    if screen2[-1] in ("+", "-"):
+                        screen2 += "0"
+                    elif screen2[-1] in ("/", "*"):
+                        screen2 += "1"
+                    break
+                screen2 = screen2[:-1]
         self.outputLabel.setText(screen)
+        self.outputLabel2.setText(screen2)
 
     # add decimal
     def dot_it(self):
         screen = self.outputLabel.text()
+        screen2 = self.outputLabel2.text()
         if screen[-1] == ".":
             pass
         else:
             self.outputLabel.setText(f'{screen}.')
+            self.outputLabel2.setText(f'{screen2}.')
 
-    def press_it(self, pressed, operator=0):
+
+    def press_it(self, pressed):
         if pressed == "C":
             self.outputLabel.setText("0")
+            self.outputLabel2.setText("0")
         else:
             # check if it start with 0, if so remove
             if self.outputLabel.text() == "0":
-                 self.outputLabel.setText("")
+                self.outputLabel.setText("")
+                self.outputLabel2.setText("")
+            
+            if pressed in ("+", "-", "/", "*"):
+                answer = self.outputLabel.text()
+            
+            
             # add number after the one berfore
             self.outputLabel.setText(f'{self.outputLabel.text()}{pressed}')
+            self.outputLabel2.setText(f'{self.outputLabel2.text()}{pressed}')
+
+
 
     def retranslateUi(self, SimpleCalculator):
         _translate = QtCore.QCoreApplication.translate
@@ -392,6 +447,7 @@ class Ui_SimpleCalculator(object):
         self.pequal.setText(_translate("SimpleCalculator", "="))
         self.pdot.setText(_translate("SimpleCalculator", "."))
         self.pclearentry.setText(_translate("SimpleCalculator", "CE"))
+        self.outputLabel2.setText(_translate("SimpleCalculator", "0"))
 
 
 if __name__ == "__main__":

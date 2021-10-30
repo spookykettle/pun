@@ -2,6 +2,9 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+# The working calculator is the SimpleCalculator.py
+# This is just using QT designer to create
+
 class Ui_SimpleCalculator(object):
     def setupUi(self, SimpleCalculator):
         SimpleCalculator.setObjectName("SimpleCalculator")

@@ -4,7 +4,7 @@ from PyQt5.QtCore import *
 
 import operator
 
-from Calculator_mainwindow import Ui_SimpleCalculator
+from caldesign import Ui_SimpleCalculator
 
 READY = 0
 INPUT = 1

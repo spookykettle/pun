@@ -43,6 +43,9 @@ class SimpleCalculator(QMainWindow, Ui_SimpleCalculator):
 
 # cannot do the decimal yet
     def decimal(self):
+        # self.stack[-1] = f'{self.stack[-1]}{"."}'
+        # self.state = INPUT
+        # self.display()
         pass
 
     def display(self):
@@ -56,11 +59,10 @@ class SimpleCalculator(QMainWindow, Ui_SimpleCalculator):
         self.display()
     
     def resetce(self):
+        # CE: clear entry - restore the number before press equal
         self.state = INPUT
         self.stack = [0]
         self.stack[-1] = self.memory_before
-        self.last_operation = None
-        self.current_op = None
         self.display()
 
     def memory_store(self):
@@ -103,6 +105,8 @@ class SimpleCalculator(QMainWindow, Ui_SimpleCalculator):
             self.current_op = None
             self.state = READY
             self.display()
+
+        self.memory_before = self.lcdNumber.value()
 
 if __name__ == '__main__':
     app = QApplication([])

@@ -1,3 +1,5 @@
+"""Project Jacob"""
+
 from game import Game
 
 g = Game()

@@ -90,7 +90,7 @@ class Game():
                 self.display.fill(self.BLACK)
                 self.draw_text_demon("I'M TAKING HER. DONT TRY TO FIND US", 30, self.DISPLAY_W/2, self.DISPLAY_H/2 - 100)  
                 self.draw_text_demon("- ALMIGHTY DEMON LORD", 30, self.DISPLAY_W/2 + 70, self.DISPLAY_H/2 -65)
-                self.draw_text("OH NO! THE DEMON TOOK HER! GOTTA GO SAVE HER NOW!", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 +50)
+                self.draw_text("JACOB: OH NO! I NEED TO SAVE HER NOW!", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 +50)
 
                 self.window.blit(self.display, (0,0))
                 pygame.display.update()

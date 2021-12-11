@@ -59,10 +59,12 @@ class Game():
 
             if page == 3:
                 self.display.fill(self.BLACK)
-                self.draw_text("YOU FOUND A suspicious-looking letter on the bed..", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 - 60)  
-                self.draw_text("DO YOU WANT TO READ IT?", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 -30)
-                self.draw_text("SURE. WHY NOT...", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 +20)
-                self.draw_text("NO. THAT'S SUSSY", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 +40)
+                self.draw_text("YOU FOUND A suspicious-looking letter on the bed...", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 - 60)
+                self.draw_text("you pick it up and open it with no hesitation...", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 -30)
+                self.draw_text("JACOB: Let's see what this is all about", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 +20)
+                # self.draw_text("DO YOU WANT TO READ IT?", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 -30)
+                # self.draw_text("SURE. WHY NOT...", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 +20)
+                # self.draw_text("NO. THAT'S SUSSY", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 +40)
 
                 # self.draw_cursor(-130, 20)
                 # if self.UP_KEY or self.DOWN_KEY:
@@ -77,12 +79,12 @@ class Game():
                 #         self.UP_KEY = False
 
                 if self.START_KEY:
-                    if self.state == "yes":
-                        page = 4
-                        self.reset_keys()
-                    if self.state == "no":
-                        page = 2
-                        self.reset_keys()
+                    # if self.state == "yes":
+                    page = 4
+                    self.reset_keys()
+                    # if self.state == "no":
+                    #     page = 2
+                    #     self.reset_keys()
                 self.window.blit(self.display, (0,0))
                 pygame.display.update()
 
@@ -94,6 +96,22 @@ class Game():
 
                 self.window.blit(self.display, (0,0))
                 pygame.display.update()
+                if self.START_KEY:
+                    page = 5
+                    self.reset_keys()
+            
+            if page == 5:
+                self.display.fill(self.BLACK)
+                self.draw_text("You travel miles and miles.. finally!", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 - 60)
+                self.draw_text("You are here at the lord's castle!!", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 -30)
+                self.draw_text("JACOB: Let's defeat the lord and take my bella back!", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 +50)
+
+                self.window.blit(self.display, (0,0))
+                pygame.display.update()
+                if self.START_KEY:
+                    page = 6
+                    self.reset_keys()
+
 
     # check the player input to see what they press
     def check_events(self):

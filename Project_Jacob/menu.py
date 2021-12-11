@@ -14,7 +14,7 @@ class Menu():
 
     def draw_cursor(self):
         self.game.draw_pixel_invader("T", 25, self.cursor_rect.x + 20, self.cursor_rect.y)
-        
+
     def blit_screen(self):
         self.game.window.blit(self.game.display, (0,0))
         pygame.display.update()

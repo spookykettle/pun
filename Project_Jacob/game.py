@@ -22,14 +22,14 @@ class Game():
         self.control = ControlMenu(self)
         self.credits = CreditsMenu(self)
         self.exit = ExitMenu(self)
-        self.cursor_rect = pygame.Rect(0, 0, 20, 20)
-        self.curr_menu = self.main_menu
+        # self.cursor_rect = pygame.Rect(0, 0, 20, 20)
+        # self.curr_menu = self.main_menu
 
-        self.state = "yes"
-        self.cursor_rect.midtop = (self.DISPLAY_W/2 -130, self.DISPLAY_H/2 +20)
+        # self.state = "yes"
+        # self.cursor_rect.midtop = (self.DISPLAY_W/2 -130, self.DISPLAY_H/2 +20)
     
-    def draw_cursor(self, x, y):
-        self.draw_pixel_invader("T", 25, self.DISPLAY_W/2 +x, self.DISPLAY_H/2 +y)
+    # def draw_cursor(self, x, y):
+    #     self.draw_pixel_invader("T", 25, self.DISPLAY_W/2 +x, self.DISPLAY_H/2 +y)
 
     def game_loop(self):
         page = 1

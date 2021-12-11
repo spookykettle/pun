@@ -10,14 +10,14 @@ class Game():
         # running variable true when the game is on, may be game is on but not playing
         self.running, self.playing = True, False
         self.UP_KEY, self.DOWN_KEY, self.START_KEY, self.BACK_KEY, self.ESCAPE_KEY = False, False, False, False, False
-        self.DISPLAY_W, self.DISPLAY_H = 800,550
+        self.DISPLAY_W, self.DISPLAY_H = 800, 550
         self.display = pygame.Surface((self.DISPLAY_W, self.DISPLAY_H))
         self.window = pygame.display.set_mode(((self.DISPLAY_W, self.DISPLAY_H)))
         self.font_name = "victor-pixel.TTF"
         self.font_face = "pixel_invaders.TTF"
         self.font_scary = "satan's island.TTF"
         # or if want default then use = pygame.font.get_default_font_()
-        self.BLACK, self.WHITE, self.RED = (0, 0, 0), (255, 255, 255), (166, 48, 48)
+        self.BLACK, self.WHITE, self.RED = (14, 12, 64), (255, 255, 255), (166, 48, 48)
         self.main_menu = MainMenu(self)
         self.control = ControlMenu(self)
         self.credits = CreditsMenu(self)

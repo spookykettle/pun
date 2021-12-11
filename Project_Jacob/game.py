@@ -23,7 +23,7 @@ class Game():
         self.credits = CreditsMenu(self)
         self.exit = ExitMenu(self)
         # self.cursor_rect = pygame.Rect(0, 0, 20, 20)
-        # self.curr_menu = self.main_menu
+        self.curr_menu = self.main_menu
 
         # self.state = "yes"
         # self.cursor_rect.midtop = (self.DISPLAY_W/2 -130, self.DISPLAY_H/2 +20)

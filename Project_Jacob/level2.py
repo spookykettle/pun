@@ -4,6 +4,13 @@ import pygame
 from random import choice
 import time
 
+import os
+from os import path
+
+current_direc = os.getcwd()
+game_folder = os.path.dirname(current_direc)
+img_folder = os.path.join(game_folder, "Project_Jacob")
+
 pygame.init()
 
 class Square(pygame.sprite.Sprite):
@@ -40,7 +47,7 @@ class Square(pygame.sprite.Sprite):
                     checkWinner("o")
 
 def CompMove():
-    global move, bg
+    global move, bg, score
     move = True
     if move:
         Winner("x")
@@ -58,13 +65,19 @@ def CompMove():
         for s in square:
             if s.number == comp_move:
                 s.clicked(s.x, s.y)
-    else:
+    else: 
         Update()
         time.sleep(0)
         square_group.empty()
         bg = pygame.transform.scale(pygame.image.load("Tie Game.png"), (WIDTH, HEIGHT))
 
+def draw_text(text, font_size, font_color, x, y):
+    font = pygame.font.Font("victor-pixel.ttf", font_size)
+    font_surface = font.render(text, True, font_color)
+    win.blit(font_surface, (x,y))
+
 def Update():
+    global won, move
     win.blit(bg, (0,0))
     square_group.draw(win)
     square_group.update()
@@ -161,6 +174,7 @@ def checkEdge():
 WIDTH = 800
 HEIGHT = 800
 
+
 win = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("level 2")
 clock = pygame.time.Clock()
@@ -169,6 +183,9 @@ blank_image = pygame.image.load("sq.png")
 x_image = pygame.image.load("x.png")
 o_image = pygame.image.load("o.png")
 bg = pygame.image.load("ttt_bg.png")
+
+
+score = 0
 
 bg = pygame.transform.scale(bg, (WIDTH, HEIGHT))
 

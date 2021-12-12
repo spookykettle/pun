@@ -34,10 +34,10 @@ win = z.display.set_mode((WIDTH, HEIGHT))
 z.display.set_caption("level 2")
 clock = z.time.Clock()
 
-blank_image = z.image.load("Blank.png")
+blank_image = z.image.load("sq.png")
 x_image = z.image.load("x.png")
 o_image = z.image.load("o.png")
-bg = z.image.load("background.png")
+bg = z.image.load("ttt_bg.png")
 
 bg = z.transform.scale(bg, (WIDTH, HEIGHT))
 

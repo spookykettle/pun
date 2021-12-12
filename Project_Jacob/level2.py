@@ -20,12 +20,27 @@ class Square(z.sprite.Sprite):
     def update(self):
         self.rect.center = (self.x, self.y)
 
+    def clicked(self, xval, yval):
+        global turn
+        if self.content == " ":
+            if self.rect.collidepoint(xval,yval):
+                self.content = turn
+                board[self.number] = turn
+                if turn == "x":
+                    self.image = z.transform.scale(x_image, (self.width, self.height))
+                    turn = "o"
+                else:
+                    self.image = z.transform.scale(o_image, (self.width, self.height))
+                    turn = "x"
+                    
+
 
 def Update():
     win.blit(bg, (0,0))
     square_group.draw(win)
     square_group.update()
     z.display.update()
+
 
 WIDTH = 800
 HEIGHT = 800
@@ -43,6 +58,7 @@ bg = z.transform.scale(bg, (WIDTH, HEIGHT))
 
 square_group = z.sprite.Group()
 square = []
+board = [" " for i in range(10)]
 
 num = 1
 for y in range(1, 4):
@@ -53,6 +69,8 @@ for y in range(1, 4):
 
         num += 1
 
+turn = "x"
+
 runn = True
 
 while runn:
@@ -60,5 +78,9 @@ while runn:
     for event in z.event.get():
         if event.type == z.QUIT:
             runn = False
+        if event.type == z.MOUSEBUTTONDOWN and turn == "x":
+            mx, my = z.mouse.get_pos()
+            for s in square:
+                s.clicked(mx, my)
 
     Update()

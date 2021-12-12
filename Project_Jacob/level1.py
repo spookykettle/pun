@@ -57,6 +57,8 @@ def draw_countdown():
         count_down -= 1
     draw_text(str(count_down), 35, black, 20, 20)
 
+
+
 pygame.init()
 pygame.mixer.init()
 
@@ -119,14 +121,21 @@ while run:
             if event.button == 1:
                 sword_img = sword[0]
         if event.type == KEYUP:
-            if event.key == K_f and game_over:
+            # i add p secretly so i can use it on the presentation
+            if (event.key == K_f or event.key == K_p) and game_over:
                 countdown = 10
                 score = 0
                 pos = 0
                 kbd_score = 0
                 count_down = 30
                 game_over = False
-
+            elif event.key == K_p:
+                countdown = 10
+                score = 0
+                pos = 0
+                kbd_score = 0
+                count_down = 30
+                game_over = False
 
 
     screen.blit(bottom_pic, (0,550))

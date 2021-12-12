@@ -62,6 +62,7 @@ countdown = 3
 last_update = pygame.time.get_ticks()
 score = 0
 pos = 0
+kbd_score = 0
 
 #sound
 stab = pygame.mixer.Sound(path.join(img_folder, "mole_sword_stab.mp3"))
@@ -97,20 +98,26 @@ while run:
                     # see if we are clicking on the mole
                     stab.play()
                     score += 1
+                    kbd_score += random.randint(0,3)
                     pos = random_mole_position()
                 else:
                     score -= 1
+                    kbd_score -= random.randint(0,3)
                     pos = random_mole_position()
                 sword_img = sword[1]
         if event.type == MOUSEBUTTONUP:
             if event.button == 1:
                 sword_img = sword[0]
-    
-    screen.blit(bottom_pic, (0,550))
 
-    draw_text(f"Minion Killed: {score}", 35, black, width/2 +40, 720)
+    screen.blit(bottom_pic, (0,550))
+    draw_text('"You will never ', 40, (173, 0, 0), width/2 -45, 600)
+    draw_text('get ME! HAHAHA!!"', 40, (173, 0, 0), width/2 -25, 635)
+    draw_text(f"Minion Killed: {score}", 30, black, width/2 +61, 700)
+    draw_text(f"Kibidango: {kbd_score}", 30, black, width/2 +120, 725)
     screen.blit(sword_img, sword_rect)
     pygame.display.flip()
+
+    #draw_text(f"Minion Killed: {score}", 35, black, width/2 +40, 720)
 
     now = pygame.time.get_ticks()
     # so the mole wont start at top-left

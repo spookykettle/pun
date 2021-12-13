@@ -4,6 +4,21 @@ import pygame
 from pygame.event import Event
 from menu import *
 
+import pygame
+import os
+import random
+
+from os import path
+from pygame import draw
+from pygame.event import event_name
+from pygame.locals import *
+
+from level1 import Level1
+from level2 import Level2
+from level3 import Level3
+
+from subprocess import call
+
 class Game():
     def __init__(self):
         pygame.init()
@@ -111,7 +126,27 @@ class Game():
                 if self.START_KEY:
                     page = 6
                     self.reset_keys()
-
+            if page == 6:
+                level1 = Level1()
+                level1Result = level1.run()
+                if level1Result == 'Win':
+                    page = 7
+                else:
+                    page = 1
+            
+            if page == 7:
+                level2 = Level2()
+                level1Result2 = level2.run()
+                if level1Result2 == 'Tie':
+                    page = 8
+                elif level1Result2 == 'Lost':
+                    page = 1
+                else:
+                    page = 8
+                    
+            if page == 8:
+                level3 = Level3()
+                level3.run(level1Result2 == 'Win')
 
     # check the player input to see what they press
     def check_events(self):

@@ -48,7 +48,7 @@ class Square(pygame.sprite.Sprite):
 
 
 def CompMove():
-    global move, bg
+    global move, bg, end_tiegame, x
     move = True
     if move:
         Winner("x")
@@ -68,13 +68,17 @@ def CompMove():
                 s.clicked(s.x, s.y)
     else:
         # go to level 3
+        end_tiegame = True
         Update()
-        time.sleep(1)
-        
+        # time.sleep(5)
+        while x > 0:
+            x -= 1
+            pygame.time.delay(1500)
+        if x == 0:
+            end_tiegame = False
         # empty otherwise it will be on the screen infront of bg
-        square_group.empty()
-
-        bg = pygame.transform.scale(pygame.image.load("Tie Game.png"), (WIDTH, HEIGHT))
+            square_group.empty()
+            bg = pygame.transform.scale(pygame.image.load("door_bg.png"), (WIDTH, HEIGHT))
 
 def draw_text(text, font_size, font_color, x, y):
     font = pygame.font.Font("victor-pixel.ttf", font_size)
@@ -82,9 +86,12 @@ def draw_text(text, font_size, font_color, x, y):
     win.blit(font_surface, (x,y))
 
 def Update():
-    global won, move
+    global won, move, end_tiegame, bg
     win.blit(bg, (0,0))
-
+    if end_tiegame == True:
+        bg = pygame.transform.scale(pygame.image.load("ttt_bg2.png"), (WIDTH, HEIGHT))
+        win.blit(bg, (0,0))
+        draw_text('TIED GAME!?', 80, (0, 0, 0), WIDTH/4 - 60, 570)
     square_group.draw(win)
     square_group.update()
     pygame.display.update()
@@ -200,6 +207,10 @@ bg = pygame.image.load("ttt_bg.png")
 count_score = False
 
 score = 0
+end_tiegame = False
+
+# countdown
+x = 15
 
 bg = pygame.transform.scale(bg, (WIDTH, HEIGHT))
 

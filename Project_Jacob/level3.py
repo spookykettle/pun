@@ -4,6 +4,8 @@ from os import path
 import os
 import time
 
+from pygame.constants import MOUSEBUTTONDOWN
+
 class Level3:
     def __init__(self) -> None:
         self.CURRENT_DIREC = os.getcwd()
@@ -13,8 +15,10 @@ class Level3:
         self.WIDTH = 800
         self.HEIGHT = 800
     
-    def clicked():
-        pass
+    def clicked(self, xval, yval):
+        
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pass
 
     def run(self, startWithHint:bool = False):
         print("Start lvl3 with hint" if startWithHint else 'Start lvl3 without hint')
@@ -39,7 +43,8 @@ class Level3:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     runn = False
-                else:
+                mouse_pos = pygame.mouse.get_pos()
+                if event.type == MOUSEBUTTONDOWN:
                     pass
                     
 

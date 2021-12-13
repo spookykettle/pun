@@ -48,7 +48,7 @@ class Level2:
         self.GAME_FOLDER = os.path.dirname(self.CURRENT_DIREC)
         self.IMG_FOLDER = os.path.join(self.GAME_FOLDER, "Project_Jacob")
 
-        self.MAX_TIE_COUNT = 1
+        self.MAX_TIE_COUNT = 3
 
         self.DANGER_POSITION_1 = ['', 'x', '', '', '', 'o', '', '', '', 'x']
         self.DANGER_POSITION_2 = ['', '', '', 'x', '', 'o', '', 'x', '', '']

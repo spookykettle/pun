@@ -129,8 +129,10 @@ class Game():
             if page == 6:
                 level1 = Level1()
                 level1Result = level1.run()
-                if level1Result == 'Win':
+                if level1Result[0] == 'Win':
                     page = 7
+                    kbd = level1Result[1]
+                    print(kbd)
                 else:
                     page = 1
             

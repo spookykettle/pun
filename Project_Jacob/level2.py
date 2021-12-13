@@ -150,7 +150,7 @@ def checkWinner(player):
         # empty otherwise it will be on the screen infront of bg
         square_group.empty()
         if player == "x":
-            # go to boss room
+            # if you win monster will tell you which door is the right one
             pass
         else:
             bg = pygame.transform.scale(pygame.image.load(player.upper() + " Wins.png"), (WIDTH,HEIGHT))

@@ -46,8 +46,9 @@ class Square(pygame.sprite.Sprite):
                     turn = "x"
                     checkWinner("o")
 
+
 def CompMove():
-    global move, bg, score
+    global move, bg
     move = True
     if move:
         Winner("x")
@@ -65,10 +66,14 @@ def CompMove():
         for s in square:
             if s.number == comp_move:
                 s.clicked(s.x, s.y)
-    else: 
+    else:
+        # go to level 3
         Update()
-        time.sleep(0)
+        time.sleep(1)
+        
+        # empty otherwise it will be on the screen infront of bg
         square_group.empty()
+
         bg = pygame.transform.scale(pygame.image.load("Tie Game.png"), (WIDTH, HEIGHT))
 
 def draw_text(text, font_size, font_color, x, y):
@@ -79,6 +84,7 @@ def draw_text(text, font_size, font_color, x, y):
 def Update():
     global won, move
     win.blit(bg, (0,0))
+
     square_group.draw(win)
     square_group.update()
     pygame.display.update()
@@ -134,15 +140,21 @@ def checkDangerPos():
         move = False
 
 def checkWinner(player):
-    global bg, won
+    global bg, won, win_win
     for i in range(8):
         if board[winners[i][0]] == player and board[winners[i][1]] == player and board[winners[i][2]] == player:
             won = True
             break
     if won:
         Update()
+        # empty otherwise it will be on the screen infront of bg
         square_group.empty()
-        bg = pygame.transform.scale(pygame.image.load(player.upper() + " Wins.png"), (WIDTH,HEIGHT))
+        if player == "x":
+            # go to boss room
+            pass
+        else:
+            bg = pygame.transform.scale(pygame.image.load(player.upper() + " Wins.png"), (WIDTH,HEIGHT))
+
 
 def checkCorner():
     global comp_move, move
@@ -156,6 +168,7 @@ def checkCorner():
     #             comp_move = i
     #             move = False
     #             break
+
     j = choice([1,3,7,9])
     if board[j] == "":
         comp_move = j
@@ -184,6 +197,7 @@ x_image = pygame.image.load("x.png")
 o_image = pygame.image.load("o.png")
 bg = pygame.image.load("ttt_bg.png")
 
+count_score = False
 
 score = 0
 

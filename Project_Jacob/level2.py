@@ -1,6 +1,7 @@
 """Level 2 tic tac toe"""
 
 import pygame
+import random
 from random import choice
 import time
 
@@ -104,7 +105,6 @@ class Level2:
     
     def YOU_DIED(self):
         if self.winnerPlayer == "o":
-            self.is_won = False
             self.draw_text("YOU DIED", 80, (201, 0, 0), 45, 180)
             self.draw_text("better luck next time!", 20, (201, 0, 0), 90, 250)
             self.draw_text('press "r" to restart the game', 20, (255, 255, 255), 53, 300)
@@ -118,6 +118,7 @@ class Level2:
         
         if self.tie_count != 3:
             self.draw_text(f"GAME TIED: {self.TIE_COUNT_SHOW}", 25, (255, 221, 0), 245,422)
+        
         self.YOU_DIED()
         pygame.display.update()
 
@@ -193,31 +194,19 @@ class Level2:
             
 
     def checkCorner(self):
-
-        # corner at 1,3,7,9
-        # for i in range(1, 11, 2):
-        #     if i == 5:
-        #         pass
-        #     else:
-        #         if self.board[i] == "":
-        #             self.comp_move = i
-        #             self.move = False
-        #             break
-
         j = choice([1,3,7,9])
         if self.board[j] == "":
             self.comp_move = j
             self.move = False
 
     def checkEdge(self):
-
         # edge at 2,4,6,8
         j = choice([2,4,6,8])
         if self.board[j] == "":
             self.comp_move = j
             self.move = False
 
-    def run(self):
+    def run(self, kbd):
         self.window = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
         pygame.display.set_caption("level 2")
         clock = pygame.time.Clock()
@@ -266,42 +255,42 @@ class Level2:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         runn = False
-                        exit()
+                        pygame.display.quit()
+                        pygame.quit()
                     if event.type == pygame.MOUSEBUTTONDOWN and self.turn == "x":
                         mx, my = pygame.mouse.get_pos()
                         for s in self.square:
                             s.clicked(mx, my, self)
-                    if event.type == pygame.KEYUP:
-                        if event.key == pygame.K_r and self.winnerPlayer == "o":
-                            return ("restart", 0)
-                        elif event.key == pygame.K_b and self.winnerPlayer == "o":
-                            return ("mainmenu", 0)
+                    if self.is_won and event.type == pygame.KEYUP:
+                            if event.key == pygame.K_r and self.winnerPlayer == "o":
+                                return ("restart", 0, False)
+                            elif event.key == pygame.K_b and self.winnerPlayer == "o":
+                                return ("mainmenu", 0, False)
 
-        
                 self.screenUpdate()
 
                 # if there's someone win
-                if self.is_won or self.is_tie:
+                if (self.is_won and self.winnerPlayer == 'x') or self.is_tie:
                     print(self.is_won)
                     runn = False
-                    
+            
             # game end
-            if self.winnerPlayer == "x":
-                return "Win"
-            elif self.winnerPlayer == "o":
-                return "Lost"
-
+            if self.is_won and self.winnerPlayer == "x":
+                kbd += random.randint(20,25)
+                return ("Win", kbd, True)
+            
             self.tie_count -= 1
             self.TIE_COUNT_SHOW += 1
            
+            kbd += random.randint(10,20)
             print(f'self.tie_count: {self.tie_count}')
 
-        return "Tie"
+        return ("Tie", kbd, False)
 
 if __name__ == "__main__":
     pygame.init()
     level2 = Level2()
-    result = level2.run()
+    result = level2.run(0)
 
     print("Game result:", result)
     pygame.quit()

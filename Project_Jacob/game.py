@@ -127,13 +127,17 @@ class Game():
                     page = 6
                     self.reset_keys()
             if page == 6:
+                # level 1
                 level1 = Level1()
                 level1Result = level1.run()
+                # if return win go to next level
                 if level1Result[0] == 'Win':
                     page = 7
                     kbd = level1Result[1]
                     print("current kibidango: " + str(kbd))
+                # if lost and want to go the main menu
                 elif level1Result[0] == "mainmenu":
+                # if lost and want to restart the whole game
                     self.playing = False
                 elif level1Result[0] == "restart":
                     page = 1
@@ -141,23 +145,40 @@ class Game():
                     pass
             
             if page == 7:
+                # level 2
                 level2 = Level2()
-                level2Result = level2.run()
+                level2Result = level2.run(kbd)
+                # if tie three times go to next level with no hint
                 if level2Result == 'Tie':
                     page = 8
-                elif level2Result == 'Lost':
-                    pass
+                # if lost and want to go the main menu
                 elif level2Result[0] == "mainmenu":
                     self.playing = False
+                # if lost and want to restart game
                 elif level2Result[0] == "restart":
                     page = 1
+                # if return win go to next level with hint
                 else:
                     page = 8
                     
             if page == 8:
+                # level 3
                 level3 = Level3()
-                level3.run(level2Result == 'Win')
-
+                level3Result = level3.run(level2Result[2], kbd)
+                # if return win go to next level
+                if level3Result == "Win":
+                    page = 9
+                # if lost and want to go the main menu
+                elif level3Result == "mainmenu":
+                    self.playing = False
+                # if lost and want to restart the game
+                elif level3Result == "restart":
+                    page = 1
+            
+            if page == 9:
+                # level 4
+                pass
+                
     # check the player input to see what they press
     def check_events(self):
         for event in pygame.event.get():

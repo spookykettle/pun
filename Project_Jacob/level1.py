@@ -29,9 +29,9 @@ class Level1:
         self.COLUMN = 3
         self.ROW = 3
 
-        self.SECONDS_BEFORE_GAME_START = 5
-        self.SECONDS_PER_GAME = 3
-        self.MINIONS_TO_KILL = 20
+        self.SECONDS_BEFORE_GAME_START = 1
+        self.SECONDS_PER_GAME = 4
+        self.MINIONS_TO_KILL = 1
 
     def random_mole_position(self):
         self.random_grass = random.choice(self.grass_list_rect)
@@ -105,6 +105,8 @@ class Level1:
         while run:
             for event in pygame.event.get():
                 if event.type == QUIT:
+                    pygame.display.quit()
+                    pygame.quit()
                     run = False
                 mouse_pos = pygame.mouse.get_pos()
                 sword_rect.center = (mouse_pos[0], mouse_pos[1])
@@ -184,12 +186,11 @@ class Level1:
         
             if self.count_down == 0:
                 if self.score < self.MINIONS_TO_KILL:
-                    self.game_over = True
                     self.draw_text("YOU DIED", 110, self.RED, self.WIDTH/5 -20, self.HEIGHT/2 -140)
                     self.draw_text("better luck next time!", 20, self.RED, self.WIDTH/3+4, self.HEIGHT/2 - 40)
                     self.draw_text('press "r" to restart the game', 30, self.WHITE, self.WIDTH/5 -23, self.HEIGHT/2)
                     self.draw_text('press "b" to go back to main menu', 30, self.WHITE, self.WIDTH/5 -30, self.HEIGHT/2 + 30)
-                    return ("Lost", 0)
+                    self.game_over = True
                 else:
                     run = False
 

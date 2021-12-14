@@ -63,6 +63,8 @@ class Level2:
         self.WIDTH = 800
         self.HEIGHT = 800
 
+        self.TIE_COUNT_SHOW = 0
+
         self.WINNER_MOVES = [[1,2,3], [4,5,6], [7,8,9], [1,4,7], [2,5,8], [3,6,9], [1,5,9], [3,5,7]]
 
     def determineComputerMove(self):
@@ -99,11 +101,24 @@ class Level2:
         font = pygame.font.Font("victor-pixel.ttf", font_size)
         font_surface = font.render(text, True, font_color)
         self.window.blit(font_surface, (x,y))
+    
+    def YOU_DIED(self):
+        if self.winnerPlayer == "o":
+            self.is_won = False
+            self.draw_text("YOU DIED", 80, (201, 0, 0), 45, 180)
+            self.draw_text("better luck next time!", 20, (201, 0, 0), 90, 250)
+            self.draw_text('press "r" to restart the game', 20, (255, 255, 255), 53, 300)
+            self.draw_text('press "b" to go back to main menu', 20, (255, 255, 255), 35, 330)
+
 
     def screenUpdate(self):
         self.window.blit(self.background, (0,0))
         self.square_group.draw(self.window)
         self.square_group.update()
+        
+        if self.tie_count != 3:
+            self.draw_text(f"GAME TIED: {self.TIE_COUNT_SHOW}", 25, (255, 221, 0), 245,422)
+        self.YOU_DIED()
         pygame.display.update()
 
     def checkCenter(self):
@@ -165,18 +180,17 @@ class Level2:
             # update screen - set to ttt background
             self.screenUpdate()
             # remove tiles
-            self.square_group.empty()
-
             # if Jacob win
             if player == "x":
                 # set winner player to x
                 self.winnerPlayer = "x"
+                self.square_group.empty()
             else:
                 # set winner play to o
                 self.winnerPlayer = "o"
-                # set background according to player
-                self.background = pygame.transform.scale(pygame.image.load(player.upper() + " Wins.png"), (self.WIDTH, self.HEIGHT))
-
+                time.sleep(1)
+                self.square_group.empty()
+            
 
     def checkCorner(self):
 
@@ -197,12 +211,11 @@ class Level2:
 
     def checkEdge(self):
 
-        # corner at 1,3,7,9
-        for i in range(2, 10, 2):
-            if self.board[i] == "":
-                self.comp_move = i
-                self.move = False
-                break
+        # edge at 2,4,6,8
+        j = choice([2,4,6,8])
+        if self.board[j] == "":
+            self.comp_move = j
+            self.move = False
 
     def run(self):
         self.window = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
@@ -258,11 +271,18 @@ class Level2:
                         mx, my = pygame.mouse.get_pos()
                         for s in self.square:
                             s.clicked(mx, my, self)
+                    if event.type == pygame.KEYUP:
+                        if event.key == pygame.K_r and self.winnerPlayer == "o":
+                            return ("restart", 0)
+                        elif event.key == pygame.K_b and self.winnerPlayer == "o":
+                            return ("mainmenu", 0)
+
         
                 self.screenUpdate()
 
                 # if there's someone win
                 if self.is_won or self.is_tie:
+                    print(self.is_won)
                     runn = False
                     
             # game end
@@ -272,6 +292,7 @@ class Level2:
                 return "Lost"
 
             self.tie_count -= 1
+            self.TIE_COUNT_SHOW += 1
            
             print(f'self.tie_count: {self.tie_count}')
 

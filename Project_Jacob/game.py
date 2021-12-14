@@ -132,23 +132,31 @@ class Game():
                 if level1Result[0] == 'Win':
                     page = 7
                     kbd = level1Result[1]
-                    print(kbd)
-                else:
+                    print("current kibidango: " + str(kbd))
+                elif level1Result[0] == "mainmenu":
+                    self.playing = False
+                elif level1Result[0] == "restart":
                     page = 1
+                else:
+                    pass
             
             if page == 7:
                 level2 = Level2()
-                level1Result2 = level2.run()
-                if level1Result2 == 'Tie':
+                level2Result = level2.run()
+                if level2Result == 'Tie':
                     page = 8
-                elif level1Result2 == 'Lost':
+                elif level2Result == 'Lost':
+                    pass
+                elif level2Result[0] == "mainmenu":
+                    self.playing = False
+                elif level2Result[0] == "restart":
                     page = 1
                 else:
                     page = 8
                     
             if page == 8:
                 level3 = Level3()
-                level3.run(level1Result2 == 'Win')
+                level3.run(level2Result == 'Win')
 
     # check the player input to see what they press
     def check_events(self):

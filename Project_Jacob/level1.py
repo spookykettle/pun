@@ -30,7 +30,7 @@ class Level1:
         self.ROW = 3
 
         self.SECONDS_BEFORE_GAME_START = 5
-        self.SECONDS_PER_GAME = 30
+        self.SECONDS_PER_GAME = 3
         self.MINIONS_TO_KILL = 20
 
     def random_mole_position(self):
@@ -124,13 +124,10 @@ class Level1:
                         sword_img = sword[0]
                 if event.type == KEYUP:
                     # i add p secretly so i can use it on the presentation
-                    if (event.key == K_f or event.key == K_p) and self.game_over:
-                        self.countdown = self.SECONDS_BEFORE_GAME_START
-                        self.score = 0
-                        self.pos = 0
-                        self.kbd_score = 0
-                        self.count_down = self.SECONDS_PER_GAME
-                        self.game_over = False
+                    if event.key == K_r:
+                        # go to the first scene of the game
+                        return ("restart", 0)
+                        
                     elif event.key == K_p:
                         self.countdown = self.SECONDS_BEFORE_GAME_START
                         self.score = 0
@@ -138,6 +135,10 @@ class Level1:
                         self.kbd_score = 0
                         self.count_down = self.SECONDS_PER_GAME
                         self.game_over = False
+                    elif event.key == K_m and self.game_over:
+                        # go to main menu
+                        return ("mainmenu", 0)
+                        # ยังไม่ได้ลองรันเพราะตอนตายไม่ขึ้น
 
 
             self.screen.blit(bottom_pic, (0,550))
@@ -186,13 +187,13 @@ class Level1:
                     self.game_over = True
                     self.draw_text("YOU DIED", 110, self.RED, self.WIDTH/5 -20, self.HEIGHT/2 -140)
                     self.draw_text("better luck next time!", 20, self.RED, self.WIDTH/3+4, self.HEIGHT/2 - 40)
-                    self.draw_text('press "f" to restart the game', 30, self.WHITE, self.WIDTH/5 -23, self.HEIGHT/2)
-                    return "Lost"
+                    self.draw_text('press "r" to restart the game', 30, self.WHITE, self.WIDTH/5 -23, self.HEIGHT/2)
+                    self.draw_text('press "b" to go back to main menu', 30, self.WHITE, self.WIDTH/5 -30, self.HEIGHT/2 + 30)
+                    return ("Lost", 0)
                 else:
-                    run = False  
+                    run = False
 
-        result = ("Win", self.kbd_score)
-        return result          
+        return ("Win", self.kbd_score)       
 
         # reference >> https://www.youtube.com/watch?v=YMLBLJhXXn8
 
@@ -202,3 +203,7 @@ if __name__ == "__main__":
     game = Level1()
     game.run()
     pygame.quit()
+
+
+# รันตอนตายไม่ได้
+# ตายแล้ววนลูป

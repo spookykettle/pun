@@ -79,6 +79,7 @@ class Level3():
 
         # die or not
         self.die = False
+        self.no_more_clicking = False
 
         # door viariables
         self.DOOR1_1 = pygame.transform.scale(pygame.image.load(path.join(self.IMG_FOLDER, "door1_1.png")).convert_alpha(), (340, 400))
@@ -107,7 +108,7 @@ class Level3():
         self.door2_2 = Door_as_button(self.DOOR2_2, self.DOOR2_2_HOVER, 340/2, 400/2, self, (370, 90))
 
         self.door3_1 = Door_as_button(self.DOOR3_1, self.DOOR3_1_HOVER, 250/2, 400/2, self, (100, 90))
-        self.door3_2 = Door_as_button(self.DOOR3_2, self.DOOR3_2_HOVER, 250/2, 400/2, self, (400, 90))
+        self.door3_2 = Door_as_button(self.DOOR3_2, self.DOOR3_2_HOVER, 250/2, 400/2, self, (430, 90))
 
         self.blank_door = Door_as_button(self.blank, self.blank_h, 800, 800, self, (1, 1))
         self.window.blit(self.background, (0,0))
@@ -144,7 +145,7 @@ class Level3():
                             return "restart"
 
 
-                if event.type == MOUSEBUTTONDOWN:
+                if event.type == MOUSEBUTTONDOWN and self.no_more_clicking == False:
                     if ((self.which_door == 1) and self.focus_door_1.button_check_input(mouse_pos)) \
                         or ((self.which_door == 2) and self.focus_door_2.button_check_input(mouse_pos)):
                         # open the correct door -> to the boss room
@@ -154,7 +155,9 @@ class Level3():
                         self.randomCorrectDoor()
 
                         if self.die == True:
+                            # last door
                             self.window.blit(self.background2, (0,0))
+                            self.no_more_clicking = True
                         else:
                             self.window.blit(self.background, (0,0))
 

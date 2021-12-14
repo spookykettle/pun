@@ -22,6 +22,11 @@ from subprocess import call
 class Game():
     def __init__(self):
         pygame.init()
+
+        self.CURRENT_DIREC = os.getcwd()
+        self.GAME_FOLDER = os.path.dirname(self.CURRENT_DIREC)
+        self.IMG_FOLDER = os.path.join(self.GAME_FOLDER, "Project_Jacob")
+
         # running variable true when the game is on, may be game is on but not playing
         self.running, self.playing = True, False
         self.UP_KEY, self.DOWN_KEY, self.START_KEY, self.BACK_KEY, self.ESCAPE_KEY = False, False, False, False, False
@@ -37,25 +42,27 @@ class Game():
         self.control = ControlMenu(self)
         self.credits = CreditsMenu(self)
         self.exit = ExitMenu(self)
-        # self.cursor_rect = pygame.Rect(0, 0, 20, 20)
         self.curr_menu = self.main_menu
 
-        # self.state = "yes"
-        # self.cursor_rect.midtop = (self.DISPLAY_W/2 -130, self.DISPLAY_H/2 +20)
-    
-    # def draw_cursor(self, x, y):
-    #     self.draw_pixel_invader("T", 25, self.DISPLAY_W/2 +x, self.DISPLAY_H/2 +y)
 
     def game_loop(self):
         page = 1
+        self.background = pygame.transform.scale(pygame.image.load("door_bg.png"), (self.DISPLAY_W, self.DISPLAY_H))
+        self.window.blit(self.background, (0,0))
+
         while self.playing:
             self.check_events()
 
             if page == 1:
                 self.display.fill(self.BLACK)
-                self.draw_text("JACOB: ...", 20, self.DISPLAY_W/2, self.DISPLAY_H/2)
-                self.window.blit(self.display, (0,0))
+                
+                self.background = pygame.transform.scale(pygame.image.load("page_1.png"), (self.DISPLAY_W, self.DISPLAY_H))
+                self.window.blit(self.background, (0,0))
+                
+                # self.draw_text("JACOB: ...", 20, self.DISPLAY_W/2, self.DISPLAY_H/2)
+
                 pygame.display.update()
+                
                 if self.ESCAPE_KEY:
                     self.playing = False
                 if self.START_KEY:
@@ -65,8 +72,11 @@ class Game():
             if page == 2:
             # reset the screen by setting it black since the frame before is not deleted
                 self.display.fill(self.BLACK)
-                self.draw_text("JACOB: Balla? Where are you?", 20, self.DISPLAY_W/2, self.DISPLAY_H/2)    
-                self.window.blit(self.display, (0,0))
+                
+                
+                self.background = pygame.transform.scale(pygame.image.load("page_2.png"), (self.DISPLAY_W, self.DISPLAY_H))   
+                self.window.blit(self.background, (0,0))
+                # self.draw_text("JACOB: Balla? Where are you?", 20, self.DISPLAY_W/2, self.DISPLAY_H/2)
                 pygame.display.update()
                 if self.START_KEY:
                     page = 3
@@ -74,54 +84,46 @@ class Game():
 
             if page == 3:
                 self.display.fill(self.BLACK)
-                self.draw_text("YOU FOUND A suspicious-looking letter on the bed...", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 - 60)
-                self.draw_text("you pick it up and open it with no hesitation...", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 -30)
-                self.draw_text("JACOB: Let's see what this is all about", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 +20)
-                # self.draw_text("DO YOU WANT TO READ IT?", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 -30)
-                # self.draw_text("SURE. WHY NOT...", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 +20)
-                # self.draw_text("NO. THAT'S SUSSY", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 +40)
 
-                # self.draw_cursor(-130, 20)
-                # if self.UP_KEY or self.DOWN_KEY:
-                #     if self.state == 'yes':
-                #         self.draw_cursor(-130, 20)
-                #         self.UP_KEY = False
-                #         self.state = 'no'
-                            
-                #     elif self.state == 'no':
-                #         self.draw_cursor(-130, 40)
-                #         self.state = 'yes'
-                #         self.UP_KEY = False
+                self.background = pygame.transform.scale(pygame.image.load("page_3.png"), (self.DISPLAY_W, self.DISPLAY_H))
+                self.window.blit(self.background, (0,0))
 
+                #self.draw_text("YOU FOUND A suspicious-looking letter on the bed...", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 - 60)
+                #self.draw_text("you pick it up and open it with no hesitation...", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 -30)
+                #self.draw_text("JACOB: Let's see what this is all about", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 +20)
+                
+                pygame.display.update()
+                
                 if self.START_KEY:
-                    # if self.state == "yes":
                     page = 4
                     self.reset_keys()
-                    # if self.state == "no":
-                    #     page = 2
-                    #     self.reset_keys()
-                self.window.blit(self.display, (0,0))
-                pygame.display.update()
+
+                
+                
 
             if page == 4:
                 self.display.fill(self.BLACK)
-                self.draw_text_demon("I'M TAKING HER. DONT TRY TO FIND US", 30, self.DISPLAY_W/2, self.DISPLAY_H/2 - 100)  
-                self.draw_text_demon("- ALMIGHTY DEMON LORD", 30, self.DISPLAY_W/2 + 70, self.DISPLAY_H/2 -65)
-                self.draw_text("JACOB: OH NO! I NEED TO SAVE HER NOW!", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 +50)
-
-                self.window.blit(self.display, (0,0))
+                self.background = pygame.transform.scale(pygame.image.load("page_4.png"), (self.DISPLAY_W, self.DISPLAY_H))
+                self.window.blit(self.background, (0,0))
+                
+                #self.draw_text_demon("I'M TAKING HER. DONT TRY TO FIND US", 30, self.DISPLAY_W/2, self.DISPLAY_H/2 - 100)  
+                #self.draw_text_demon("- ALMIGHTY DEMON LORD", 30, self.DISPLAY_W/2 + 70, self.DISPLAY_H/2 -65)
+                #self.draw_text("JACOB: OH NO! I NEED TO SAVE HER NOW!", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 +50)
                 pygame.display.update()
+                
                 if self.START_KEY:
                     page = 5
                     self.reset_keys()
             
             if page == 5:
                 self.display.fill(self.BLACK)
-                self.draw_text("You travel miles and miles.. finally!", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 - 60)
-                self.draw_text("You are here at the lord's castle!!", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 -30)
-                self.draw_text("JACOB: Let's defeat the lord and take my bella back!", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 +50)
+                self.background = pygame.transform.scale(pygame.image.load("page_5.png"), (self.DISPLAY_W, self.DISPLAY_H))
+                self.window.blit(self.background, (0,0))
+        
+                #self.draw_text("You travel miles and miles.. finally!", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 - 60)
+                #self.draw_text("You are here at the lord's castle!!", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 -30)
+                #self.draw_text("JACOB: Let's defeat the lord and take my bella back!", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 +50)
 
-                self.window.blit(self.display, (0,0))
                 pygame.display.update()
                 if self.START_KEY:
                     page = 6

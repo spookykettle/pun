@@ -7,6 +7,9 @@ import time
 
 import os
 from os import path
+from pygame.locals import *
+
+from player_status import TheJacob
 
 class Square(pygame.sprite.Sprite):
     def __init__(self, x_id, y_id, number):
@@ -122,6 +125,8 @@ class Level2:
         if self.tie_count != 3:
             self.draw_text(f"GAME TIED: {self.TIE_COUNT_SHOW}", 25, (255, 221, 0), 245,422)
         
+        self.thePlayerState.button.button_update()
+
         pygame.display.update()
 
     def checkCenter(self):
@@ -190,10 +195,6 @@ class Level2:
                 # set winner play to o
                 self.winnerPlayer = "o"
                 self.square_group.empty()
-            
-            # # update screen - set to ttt background
-            # self.screenUpdate()
-            
 
     def checkCorner(self):
         j = choice([1,3,7,9])
@@ -208,10 +209,66 @@ class Level2:
             self.comp_move = j
             self.move = False
 
-    def run(self, kbd):
+    def _run(self):        
+        runn = True
+        while runn:
+            if self.thePlayerState.is_dead_by_insanity():
+                return ("Insane", False)
+            
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    runn = False
+                    pygame.display.quit()
+                    pygame.quit()
+                mouse_pos = pygame.mouse.get_pos()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if self.turn == "x":
+                        mx, my = pygame.mouse.get_pos()
+                        for s in self.square:
+                            s.clicked(mx, my, self)
+
+                    if event.button == 1 and self.thePlayerState.button.mouse_is_inside(mouse_pos):
+                        self.thePlayerState.run()
+
+                if event.type == MOUSEMOTION:
+                    self.thePlayerState.button.button_hover(mouse_pos)
+
+                if self.is_won and event.type == pygame.KEYUP:
+                        if event.key == pygame.K_r and self.winnerPlayer != "x":
+                            return ("restart", False)
+                        elif event.key == pygame.K_b and self.winnerPlayer != "x":
+                            return ("mainmenu", False)
+
+            if not self.thePlayerState.is_dead_by_insanity():
+
+                if (not self.waiting_for_input) and self.is_won and self.winnerPlayer != "x":
+                    self.YOU_DIED()
+                    # self.screenUpdate()
+                    self.waiting_for_input = True
+                    
+                elif not self.is_won:
+                    # start game
+                    self.screenUpdate()
+
+                # if there's someone win
+                if (self.is_won and self.winnerPlayer == 'x') or self.is_tie == True:
+
+                    # print('B', self.is_won, self.is_tie)
+                    runn = False
+                    return ("Win", True)
+
+            # print('C', self.is_won, self.is_tie)
+
+        return ("Tie", False)
+
+    def run(self, thePlayerState:TheJacob):
+        self.thePlayerState = thePlayerState
+        self.thePlayerState.set_game_level(self)
+        self.thePlayerState.set_back_to_game_screen_function(self._run)
+
         self.window = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
         pygame.display.set_caption("level II - tic-tac-toe")
-        clock = pygame.time.Clock()
+        self.clock = pygame.time.Clock()
 
         self.mouse_pos = (0,0)
         pygame.mouse.set_visible(True)
@@ -224,9 +281,11 @@ class Level2:
         self.winnerPlayer = "None"
         self.tie_count = self.MAX_TIE_COUNT
         
-        # ----------------------------------------------------------------------
         while self.tie_count > 0:
-            clock.tick(60)
+            if self.thePlayerState.is_dead_by_insanity():
+                return ("Insane", False)
+
+            self.clock.tick(60)
             # self.move = check whether the computer have to self.move or not
             self.move = True
             self.comp_move = 5
@@ -252,60 +311,36 @@ class Level2:
             # start with player Jacob (player x)
             self.turn = "x"
 
-            runn = True
-            while runn:
-                
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        runn = False
-                        pygame.display.quit()
-                        pygame.quit()
-                    if event.type == pygame.MOUSEBUTTONDOWN and self.turn == "x":
-                        mx, my = pygame.mouse.get_pos()
-                        for s in self.square:
-                            s.clicked(mx, my, self)
+            # play game
+            in_game_result = self._run()
 
-                    if self.is_won and event.type == pygame.KEYUP:
-                            if event.key == pygame.K_r and self.winnerPlayer != "x":
-                                return ("restart", 0, False)
-                            elif event.key == pygame.K_b and self.winnerPlayer != "x":
-                                return ("mainmenu", 0, False)
+            if in_game_result[0] in ('Insane', 'restart', 'mainmenu'):
+                return in_game_result
 
-                if (not self.waiting_for_input) and self.is_won and self.winnerPlayer != "x":
-                    self.YOU_DIED()
-                    # self.screenUpdate()
-                    self.waiting_for_input = True
-                    
-                elif not self.is_won:
-                    # start game
-                    self.screenUpdate()
-                
-
-                # if there's someone win
-                # print('A')
-                if (self.is_won and self.winnerPlayer == 'x') or self.is_tie == True:
-
-                    # print('B', self.is_won, self.is_tie)
-                    runn = False
-                # print('C', self.is_won, self.is_tie)
-            
             # game end
             if self.is_won and self.winnerPlayer == "x":
-                kbd += random.randint(20,25)
-                return ("Win", kbd, True)
+                self.thePlayerState.kbd += random.randint(20,25)
+                return ("Win", True)
 
             self.tie_count -= 1
             self.TIE_COUNT_SHOW += 1
            
-            kbd += random.randint(10,20)
+            self.thePlayerState.kbd += random.randint(10,20)
             print(f'self.tie_count: {self.tie_count}', 'winner:', self.winnerPlayer)
 
-        return ("Tie", kbd, False)
+        return ("Tie", False)
 
 if __name__ == "__main__":
     pygame.init()
-    level2 = Level2()
-    result = level2.run(0)
+    pygame.mixer.init()
+    game = Level2()
+
+    playerState = TheJacob()
+    playerState.kbd = 7
+    playerState.print_game_state()
+
+    result = game.run(playerState)
 
     print("Game result:", result)
+    print("Insame key pressed?", playerState.return_key_pressed)
     pygame.quit()

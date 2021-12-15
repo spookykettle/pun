@@ -5,9 +5,9 @@ import os
 import random
 
 from os import path
+from pygame import draw
+from pygame.event import event_name
 from pygame.locals import *
-
-from player_status import TheJacob
 
 class Level1:
     def __init__(self):
@@ -31,7 +31,7 @@ class Level1:
         self.ROW = 3
 
         self.SECONDS_BEFORE_GAME_START = 1
-        self.SECONDS_PER_GAME = 5
+        self.SECONDS_PER_GAME = 25
         self.MINIONS_TO_KILL = 1
 
     def random_mole_position(self):
@@ -67,7 +67,6 @@ class Level1:
         run = True
         while run:
             if self.thePlayerState.is_dead_by_insanity():
-                self.game_over = True
                 return "Insane"
 
             for event in pygame.event.get():
@@ -89,7 +88,6 @@ class Level1:
                             self.pos = self.random_mole_position()
                         self.sword_img = self.sword[1]
                     
-                    # click the kbd button
                     if event.button == 1 and self.thePlayerState.button.mouse_is_inside(mouse_pos):
                         self.thePlayerState.run()
 
@@ -117,67 +115,67 @@ class Level1:
                 if event.type == MOUSEMOTION:
                     self.thePlayerState.button.button_hover(mouse_pos)
 
-            if not self.thePlayerState.is_dead_by_insanity():
-                self.window.blit(self.bottom_pic, (0,550))
-
-                if self.countdown <= 0:
-                    self.draw_text('"You will never ', 40, (173, 0, 0), self.WIDTH/2 -45, 600)
-                    self.draw_text('get ME! HAHAHA!!"', 40, (173, 0, 0), self.WIDTH/2 -25, 635)
-                    self.draw_text(f"Minion Killed: {self.score}", 30, self.black, self.WIDTH/2 +61, 700)
-                    self.draw_text(f"Kibidango: {self.thePlayerState.kbd}", 30, self.black, self.WIDTH/2 +120, 725)
+            self.window.blit(self.bottom_pic, (0,550))
+            if self.countdown <= 0:
+                self.draw_text('"You will never ', 40, (173, 0, 0), self.WIDTH/2 -45, 600)
+                self.draw_text('get ME! HAHAHA!!"', 40, (173, 0, 0), self.WIDTH/2 -25, 635)
+                self.draw_text(f"Minion Killed: {self.score}", 30, self.black, self.WIDTH/2 +61, 700)
+                self.draw_text(f"Kibidango: {self.thePlayerState.kbd}", 30, self.black, self.WIDTH/2 +120, 725)
+            else:
+                self.draw_text('LEVEL ONE', 60, self.black, self.WIDTH/2 -20, 620)
+                self.draw_text('KILL 25 MINIONS', 40, self.BLUE, self.WIDTH/2 -25, 675)
+                if self.countdown > 9:
+                    self.draw_text(str(self.countdown), 30, (122, 108, 0), 735, 740)
                 else:
-                    self.draw_text('LEVEL ONE', 60, self.black, self.WIDTH/2 -20, 620)
-                    self.draw_text('KILL 25 MINIONS', 40, self.BLUE, self.WIDTH/2 -25, 675)
-                    if self.countdown > 9:
-                        self.draw_text(str(self.countdown), 30, (122, 108, 0), 735, 740)
-                    else:
-                        self.draw_text(str(self.countdown), 30, (122, 108, 0), 745, 740)
-                
-                self.window.blit(self.sword_img, self.sword_rect)
-                pygame.display.flip()
-
-                #draw_text(f"Minion Killed: {self.score}", 35, black, width/2 +40, 720)
-
-                now = pygame.time.get_ticks()
-                # so the self.mole wont start at top-left
-                if now - self.last_update > 1000 and self.countdown > 0:
-                    self.last_update = now
-                    self.countdown -= 1
-                    self.pos = self.random_mole_position()
-                
-                self.mole_rect.y -= 7
-                if self.mole_rect.y <= self.pos:
-                    self.mole_rect.y = self.pos
-
-                self.window.fill(self.bg)
-
-                if self.countdown > 0:
-                    pass
-                else:
-                    self.window.blit(self.mole, self.mole_rect)
-                    if not self.game_over:
-                        self.draw_countdown()
-
-                self.draw_grass()
-
-                self.thePlayerState.button.button_update()
+                    self.draw_text(str(self.countdown), 30, (122, 108, 0), 745, 740)
             
-                if self.count_down == 0:
-                    if self.score < self.MINIONS_TO_KILL:
-                        self.draw_text("YOU DIED", 110, self.RED, self.WIDTH/5 -20, self.HEIGHT/2 -140)
-                        self.draw_text("better luck next time!", 20, self.RED, self.WIDTH/3+4, self.HEIGHT/2 - 40)
-                        self.draw_text('press "r" to restart the game', 30, self.WHITE, self.WIDTH/5 -23, self.HEIGHT/2)
-                        self.draw_text('press "b" to go back to main menu', 30, self.WHITE, self.WIDTH/5 -30, self.HEIGHT/2 + 30)
-                        self.game_over = True
-                    else:
-                        run = False
+            self.window.blit(self.sword_img, self.sword_rect)
+            pygame.display.flip()
+
+            #draw_text(f"Minion Killed: {self.score}", 35, black, width/2 +40, 720)
+
+            now = pygame.time.get_ticks()
+            # so the self.mole wont start at top-left
+            if now - self.last_update > 1000 and self.countdown > 0:
+                self.last_update = now
+                self.countdown -= 1
+                self.pos = self.random_mole_position()
+            
+            self.mole_rect.y -= 7
+            if self.mole_rect.y <= self.pos:
+                self.mole_rect.y = self.pos
+
+            self.window.fill(self.bg)
+
+            if self.countdown > 0:
+                pass
+            else:
+                self.window.blit(self.mole, self.mole_rect)
+                if not self.game_over:
+                    self.draw_countdown()
+
+            self.draw_grass()
+
+            self.thePlayerState.button.button_update()
+        
+            if self.count_down == 0:
+                if self.score < self.MINIONS_TO_KILL:
+                    self.draw_text("YOU DIED", 110, self.RED, self.WIDTH/5 -20, self.HEIGHT/2 -140)
+                    self.draw_text("better luck next time!", 20, self.RED, self.WIDTH/3+4, self.HEIGHT/2 - 40)
+                    self.draw_text('press "r" to restart the game', 30, self.WHITE, self.WIDTH/5 -23, self.HEIGHT/2)
+                    self.draw_text('press "b" to go back to main menu', 30, self.WHITE, self.WIDTH/5 -30, self.HEIGHT/2 + 30)
+                    self.game_over = True
+                else:
+                    run = False
 
         return "Win"
 
-    def run(self, thePlayerState:TheJacob):
+    def run(self, thePlayerState):
         self.thePlayerState = thePlayerState
         self.thePlayerState.set_game_level(self)
         self.thePlayerState.set_back_to_game_screen_function(self._run)
+
+        print('Current game state: ', thePlayerState.insanity_state)
         
         self.window = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
         pygame.display.set_caption("Level I - kill those minions")
@@ -222,14 +220,9 @@ if __name__ == "__main__":
     pygame.init()
     pygame.mixer.init()
     game = Level1()
-
-    playerState = TheJacob()
-    playerState.set_game_level(game)
-    playerState.kbd=20
-    playerState.print_game_state()
-
-    game.run(playerState)
-
-    
-    print("Insame key pressed?", playerState.return_key_pressed)
+    game.run(0)
     pygame.quit()
+
+
+# รันตอนตายไม่ได้
+# ตายแล้ววนลูป

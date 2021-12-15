@@ -4,6 +4,9 @@ import pygame
 import os
 import time
 import random
+from pygame.locals import *
+
+from player_status import TheJacob
 
 # ----------------------------------------------------------------
 # Character classes
@@ -35,7 +38,6 @@ class Character:
         # where, color, (xposition, yposition, howbig, howbig), (0-filled/2-hollow)
         # pygame.draw.rect(window, (255,0,0), (self.x_pos, self.y_pos, 50,50), 0
         window.blit(self.character_img, (self.x_pos, self.y_pos))
-    
 
     def get_width(self):
         return self.character_img.get_width()
@@ -267,9 +269,9 @@ class Level4():
     def redraw_window(self):
         # this will draw everything on screen, anything that has to be rendered
         self.window.blit(self.background, (0,0))
-        self.draw_text(f"Jacob's Lives: {self.jcob_char.health}", 25, (255, 255, 255), 20, 20)
+        self.draw_text(f"Jacob's HP: {self.jcob_char.health}", 25, (255, 255, 255), 20, 20)
         self.draw_text(f"Lord Edward's HP: {self.boss_char.health}", 25, (255, 255, 255), 20, 50)
-        self.draw_text(f"Your kibi dungo: {self.kbd}", 25, (255, 255, 255), 20, 80)
+        self.draw_text(f"Your kibi dungo: {self.thePlayerState.kbd}", 25, (255, 255, 255), 20, 80)
         
         # draw characters
         for enemy in self.enemies:
@@ -283,6 +285,8 @@ class Level4():
         
         for each in self.boss_char.bullets:
             each.draw(self.window)
+
+        self.thePlayerState.button.button_update()
 
         pygame.display.update()
 
@@ -310,36 +314,13 @@ class Level4():
                 )
                 self.enemies.append(enemy)
 
-    def run(self, kbd):
-        # start game level 4 - Boss room
-        self.window = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
-        pygame.display.set_caption("level IV - boss fight")
-
-        # start with level 1
-        self.level = 1
-        self.kbd = kbd
-
-        clock = pygame.time.Clock()
-
-        self.lost = False
-
-        # bats list
-        self.enemies = []
-        self.enermies_per_level = 0
-
-        # create game characters:
-        self.jcob_char = Jacob(340, 550, self.JCOB_IMAGES, 
-            health=self.JACOB_START_HP, step_velocity = 10
-        )
-        self.boss_char = Boss(random.randrange(50, self.WIDTH-100), 20, self.BOSS_IMAGES, 
-            health=self.BOSS_START_HP, step_velocity = self.BOSS_START_SPEED
-        )
-        self.boss_current_direction = 'right'
-        self.generate_enermies()
-
+    def _run(self):
         run = True
         while run:
-            clock.tick(self.FPS)
+            if self.thePlayerState.is_dead_by_insanity():
+                return "Insane"
+
+            self.clock.tick(self.FPS)
             if len(self.jcob_char.bullets) == 0:
                 self.jcob_char.reset_cooldown()
 
@@ -361,6 +342,14 @@ class Level4():
                     run = False
                 if event.type == pygame.KEYDOWN:
                     pass
+
+                mouse_pos = pygame.mouse.get_pos()
+                if event.type == MOUSEMOTION:
+                    self.thePlayerState.button.button_hover(mouse_pos)
+
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == 1 and self.thePlayerState.button.mouse_is_inside(mouse_pos):
+                        self.thePlayerState.run()
 
             # dictionary of all of the keys and tells whether they are pressed or not at a current time
             self.keys = pygame.key.get_pressed()
@@ -391,10 +380,10 @@ class Level4():
 
             # j to shoot KBD
             if self.keys[pygame.K_j]:
-                if self.kbd > 0 and self.jcob_char.is_cool():
+                if self.thePlayerState.kbd > 0 and self.jcob_char.is_cool():
                     kbd_bullet = KBD(self.jcob_char.x_pos, self.jcob_char.y_pos, self.BULLET_KBD, 10, 'up')
                     self.jcob_char.shoot(kbd_bullet)
-                    self.kbd -= 1
+                    self.thePlayerState.kbd -= 1
 
             # -----------------------
             # boss moves
@@ -406,7 +395,7 @@ class Level4():
             self.boss_char.move(self.boss_current_direction)
 
             if random.randrange(0, 2*60) == 1:
-                bossBall = BossBall(self.boss_char.x_pos + 5 , self.boss_char.y_pos + self.BOSS.get_height() , 
+                bossBall = BossBall(self.boss_char.x_pos + 5 , self.boss_char.y_pos + self.BOSS.get_height(), 
                     self.BULLET_BOSS, 2, 'down'
                 )
                 self.boss_char.shoot(bossBall)
@@ -443,6 +432,7 @@ class Level4():
                         
                         self.enemies.remove(enemy)
                         self.jcob_char.reset_cooldown()
+
             for bullet in self.jcob_char.bullets:
                 if self.boss_char.check_colision(bullet):
                     self.boss_char.was_hit(bullet)
@@ -464,9 +454,49 @@ class Level4():
             self.clear_unused_images()
             self.redraw_window()
 
+    def run(self, thePlayerState:TheJacob = None):
+        self.thePlayerState = thePlayerState
+        self.thePlayerState.set_game_level(self)
+        self.thePlayerState.set_back_to_game_screen_function(self._run)
+
+        # start game level 4 - Boss room
+        self.window = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
+        pygame.display.set_caption("level IV - boss fight")
+
+        # start with level 1
+        self.level = 1
+
+        self.clock = pygame.time.Clock()
+
+        self.lost = False
+
+        # bats list
+        self.enemies = []
+        self.enermies_per_level = 0
+
+        # create game characters:
+        self.jcob_char = Jacob(340, 550, self.JCOB_IMAGES, 
+            health=self.JACOB_START_HP, step_velocity = 10
+        )
+        self.boss_char = Boss(random.randrange(50, self.WIDTH-100), 20, self.BOSS_IMAGES, 
+            health=self.BOSS_START_HP, step_velocity = self.BOSS_START_SPEED
+        )
+        self.boss_current_direction = 'right'
+        self.generate_enermies()
+
+        return self._run()
+
 if __name__ == "__main__":
     pygame.init()
-    level4 = Level4()
-    result = level4.run(100)
-    print(result)
+    pygame.mixer.init()
+    game = Level4()
+
+    playerState = TheJacob()
+    playerState.kbd = 7
+    playerState.print_game_state()
+
+    result = game.run(playerState)
+
+    print("Game result:", result)
+    print("Insame key pressed?", playerState.return_key_pressed)
     pygame.quit()

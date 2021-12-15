@@ -6,17 +6,16 @@ from menu import *
 
 import pygame
 import os
-import random
 
 from os import path
-from pygame import draw
-from pygame.event import event_name
 from pygame.locals import *
 
 from level1 import Level1
 from level2 import Level2
 from level3 import Level3
 from level4 import Level4
+
+from player_status import TheJacob
 
 from subprocess import call
 
@@ -45,17 +44,17 @@ class Game():
         self.exit = ExitMenu(self)
         self.curr_menu = self.main_menu
 
-
     def game_loop(self):
-
+        playerState = TheJacob()
+        playerState.refresh_states()
+        
         # default
         page = 1
-        kbd = 0
 
         # testcases
-        # level1Result = ("Win", kbd)   
-        # level2Result = ("Win", 0, True)
-        # level3Result = ('Win', kbd)
+        # level1Result = "Win"   
+        # level2Result = ("Win", True)
+        # level3Result = 'Win'
         
         self.background = pygame.transform.scale(pygame.image.load("door_bg.png"), (self.DISPLAY_W, self.DISPLAY_H))
         self.window.blit(self.background, (0,0))
@@ -120,25 +119,29 @@ class Game():
             if page == 6:
                 # level 1
                 level1 = Level1()
-                level1Result = level1.run()
+                level1Result = level1.run(playerState)
                 # if return win go to next level
-                if level1Result[0] == 'Win':
+                if level1Result == 'Win':
                     page = 7
-                    kbd = level1Result[1]
-                    print("current kibidango: " + str(kbd))
+                    print("current kibidango: " + str(playerState.kbd))
                 # if lost and want to go the main menu
-                elif level1Result[0] == "mainmenu":
+                elif level1Result == "mainmenu":
                 # if lost and want to restart the whole game
                     self.playing = False
-                elif level1Result[0] == "restart":
+                elif level1Result == "restart":
                     page = 1
+                elif level1Result == "Insane" and playerState.return_key_pressed == 'R':
+                    page = 1
+                    self.refresh_states()
+                elif  level1Result == "Insane" and playerState.return_key_pressed == 'B':
+                    self.playing = False
                 else:
                     pass
             
             if page == 7:
                 # level 2
                 level2 = Level2()
-                level2Result = level2.run(kbd)
+                level2Result = level2.run(playerState)
                 # if tie three times go to next level with no hint
                 if level2Result[0] == 'Tie':
                     page = 8
@@ -151,20 +154,31 @@ class Game():
                 # if return win go to next level with hint
                 elif level2Result[0] == "Win":
                     page = 8
+                elif level2Result[0] == "Insane" and playerState.return_key_pressed == 'R':
+                    page = 1
+                    self.refresh_states()
+
+                elif  level2Result[0] == "Insane" and playerState.return_key_pressed == 'B':
+                    self.playing = False
                     
             if page == 8:
                 # level 3
                 level3 = Level3()
-                level3Result = level3.run(level2Result[2], kbd)
+                level3Result = level3.run(level2Result[1], playerState)
                 # if return win go to next level
-                if level3Result[0] == "Win":
+                if level3Result == "Win":
                     page = 9
                 # if lost and want to go the main menu
-                elif level3Result[0] == "mainmenu":
+                elif level3Result == "mainmenu":
                     self.playing = False
                 # if lost and want to restart the game
-                elif level3Result[0] == "restart":
+                elif level3Result == "restart":
                     page = 1
+                elif level3Result == "Insane" and playerState.return_key_pressed == 'R':
+                    page = 1
+                    self.refresh_states()
+                elif  level3Result == "Insane" and playerState.return_key_pressed == 'B':
+                    self.playing = False
             
             if page == 9:
                 self.display.fill(self.BLACK)
@@ -178,7 +192,7 @@ class Game():
             if page == 10:
                 # level 4
                 level4 = Level4()
-                level4Result = level4.run(kbd)
+                level4Result = level4.run(playerState)
                 # if return die go to page 16
                 if level4Result == "die":
                     page = 16
@@ -186,7 +200,12 @@ class Game():
                     page = 11
                 elif level4Result == 'secret_ending':
                     page = 17
-                
+                elif level4Result == "Insane" and playerState.return_key_pressed == 'R':
+                    page = 1
+                    self.refresh_states()
+
+                elif level4Result == "Insane" and playerState.return_key_pressed == 'B':
+                    self.playing = False
 
             if page == 11:
                 # end scene

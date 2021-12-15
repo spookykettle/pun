@@ -4,6 +4,7 @@ import pygame
 from os import path
 import os
 import time
+import random
 
 from random import choice
 from pygame.constants import MOUSEBUTTONDOWN, MOUSEMOTION
@@ -99,6 +100,8 @@ class Level3():
         self.blank = pygame.transform.scale(pygame.image.load(path.join(self.IMG_FOLDER, "door_blank.png")).convert_alpha(), (1, 1))
         self.blank_h = pygame.transform.scale(pygame.image.load(path.join(self.IMG_FOLDER, "door_blank.png")).convert_alpha(), (1, 1))
 
+        self.hint = pygame.transform.scale(pygame.image.load(path.join(self.IMG_FOLDER, "hint_thisdoor.png")).convert_alpha(), (95, 70))
+        
         # door at route n _ (if left then =1 , right =2)
         self.door1_1 = Door_as_button(self.DOOR1_1, self.DOOR1_1_HOVER, 340/2, 400/2, self, (80, 90))
         self.door1_2 = Door_as_button(self.DOOR1_2, self.DOOR1_2_HOVER, 230/2, 400/2, self, (480, 90))
@@ -124,6 +127,15 @@ class Level3():
         self.focus_door_1 = self.door1_1
         self.focus_door_2 = self.door1_2
 
+        if startWithHint:
+            if self.which_door == 1:
+                self.window.blit(self.hint, (200,20))
+                #startWithHint == False
+            elif self.which_door == 2:
+                self.window.blit(self.hint, (550,20))
+                #startWithHint == False
+
+
         runn = True
         while runn:
             for event in pygame.event.get():
@@ -139,19 +151,22 @@ class Level3():
                 if event.type == pygame.KEYUP:
                     if self.die == True:
                         if event.key == pygame.K_b:
-                            return "mainmenu"
+                            return ("mainmenu", 0)
                         if event.key == pygame.K_r:
-                            return "restart"
+                            return ("restart",0)
 
 
                 if event.type == MOUSEBUTTONDOWN and self.no_more_clicking == False:
                     if ((self.which_door == 1) and self.focus_door_1.button_check_input(mouse_pos)) \
                         or ((self.which_door == 2) and self.focus_door_2.button_check_input(mouse_pos)):
+                        kbd -= random.randint(10,20)
                         # open the correct door -> to the boss room
-                        return 'Win'
+                        return ('Win', kbd)
                     else:
+                        
                         self.room_number += 1
                         self.randomCorrectDoor()
+                        kbd += random.randint(10,15)
 
                         if self.die == True:
                             # last door
@@ -165,7 +180,7 @@ class Level3():
                                 self.focus_door_1 = self.blank_door
                                 self.focus_door_2 = self.blank_door
                             else:
-                                return 'Win'
+                                return ('Win', kbd)
                             
                         if self.room_number == 2:
                             # change to the new room's doors
@@ -181,11 +196,26 @@ class Level3():
                         
                         self.focus_door_1.button_update(self)
                         self.focus_door_2.button_update(self)
+                        if startWithHint:
+                            if self.room_number == 2:
+                                if self.which_door == 1:
+                                    self.window.blit(self.hint, (160,20))
+                                    #startWithHint == False
+                                elif self.which_door == 2:
+                                    self.window.blit(self.hint, (500,20))
+                                    #startWithHint == False
+                            elif self.room_number == 3:
+                                if self.which_door == 1:
+                                    self.window.blit(self.hint, (180,20))
+                                    #startWithHint == False
+                                elif self.which_door == 2:
+                                    self.window.blit(self.hint, (520,20))
+                                    #startWithHint == False
 
                     
 if __name__ == "__main__":
     pygame.init()
     level3 = Level3()
-    result = level3.run(False, 10)
+    result = level3.run(True)
     print(result)
     pygame.quit()

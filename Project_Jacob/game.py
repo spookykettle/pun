@@ -160,13 +160,13 @@ class Game():
                 level3 = Level3()
                 level3Result = level3.run(level2Result[2], kbd)
                 # if return win go to next level
-                if level3Result == "Win":
+                if level3Result[0] == "Win":
                     page = 9
                 # if lost and want to go the main menu
-                elif level3Result == "mainmenu":
+                elif level3Result[0] == "mainmenu":
                     self.playing = False
                 # if lost and want to restart the game
-                elif level3Result == "restart":
+                elif level3Result[0] == "restart":
                     page = 1
             
             if page == 9:

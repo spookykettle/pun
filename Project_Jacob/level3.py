@@ -34,7 +34,6 @@ class Door_as_button():
         pygame.display.update()
     
     def button_check_input(self, position):
-        
         # check the boundary of mouse whether it is in picture area when clicked
         if position[0] in range(self.button_rect.left, self.button_rect.right) and position[1] in range(self.button_rect.top, self.button_rect.bottom):
             return True
@@ -72,7 +71,6 @@ class Level3:
         self.window.blit(self.current_background, (0,0))
 
         if self.startWithHint:
-            print('hi')
             if self.room_number == 2:
                 if self.which_door == 1:
                     self.window.blit(self.hint, (160,20))
@@ -93,6 +91,8 @@ class Level3:
 
     def _run(self):
         self.window.blit(self.current_background, (0,0))
+        hide_kbd_button_die = False
+
         if self.startWithHint:
             if self.which_door == 1:
                 self.window.blit(self.hint, (200,20))
@@ -101,7 +101,6 @@ class Level3:
                 self.window.blit(self.hint, (550,20))
                 #startWithHint == False
 
-        # self.refreshBackground()
         runn = True
         while runn:
             if self.thePlayerState.is_dead_by_insanity():
@@ -121,7 +120,8 @@ class Level3:
                     self.focus_door_2.button_hover(mouse_pos, self)
 
                     # if hover on kbd button
-                    self.thePlayerState.button.button_hover(mouse_pos)
+                    if not hide_kbd_button_die:
+                        self.thePlayerState.button.button_hover(mouse_pos)
                 
                 if event.type == pygame.KEYUP:
                     if self.die == True:
@@ -141,8 +141,8 @@ class Level3:
                         self.thePlayerState.kbd -= random.randint(10,20)
                         # open the correct door -> to the boss room
                         return 'Win'
+
                     else:
-                        
                         self.room_number += 1
                         self.randomCorrectDoor()
                         self.thePlayerState.kbd += random.randint(10,15)
@@ -157,6 +157,8 @@ class Level3:
                             if self.die == True:
                                 self.focus_door_1 = self.blank_door
                                 self.focus_door_2 = self.blank_door
+                                hide_kbd_button_die = True
+                                self.refreshBackground()
                             else:
                                 return 'Win'
                             
@@ -172,7 +174,9 @@ class Level3:
                             self.die = True
                         
                         if not self.thePlayerState.is_dead_by_insanity():
-                            self.thePlayerState.button.button_update()
+                            # if die and no kbd button is 
+                            if self.die == False and not hide_kbd_button_die:
+                                self.thePlayerState.button.button_update()
                             self.refreshBackground()
 
     def run(self, startWithHint:bool = False, thePlayerState:TheJacob = None):
@@ -194,6 +198,7 @@ class Level3:
 
         # die or not
         self.die = False
+        
         self.no_more_clicking = False
 
         # door viariables
@@ -258,6 +263,6 @@ if __name__ == "__main__":
 
     result = game.run(True, playerState)
 
-    print("Game result:", result)
-    print("Insame key pressed?", playerState.return_key_pressed)
+    print("Game result: ", result)
+    print("Insane key pressed: ", playerState.return_key_pressed)
     pygame.quit()

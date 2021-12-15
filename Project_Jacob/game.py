@@ -182,7 +182,6 @@ class Game():
                 # level 4
 
                 self.display.fill(self.BLACK)
-                
                 pygame.display.update()
                 if self.START_KEY:
                     page = 11

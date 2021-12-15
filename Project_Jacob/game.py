@@ -16,6 +16,7 @@ from pygame.locals import *
 from level1 import Level1
 from level2 import Level2
 from level3 import Level3
+from level4 import Level4
 
 from subprocess import call
 
@@ -36,7 +37,7 @@ class Game():
         self.font_name = "victor-pixel.TTF"
         self.font_face = "pixel_invaders.TTF"
         self.font_scary = "satan's island.TTF"
-        # or if want default then use = pygame.font.get_default_font_()
+    
         self.BLACK, self.WHITE, self.RED = (14, 12, 64), (255, 255, 255), (166, 48, 48)
         self.main_menu = MainMenu(self)
         self.control = ControlMenu(self)
@@ -46,7 +47,16 @@ class Game():
 
 
     def game_loop(self):
+
+        # default
         page = 1
+        kbd = 0
+
+        # testcases
+        # level1Result = ("Win", kbd)   
+        # level2Result = ("Win", 0, True)
+        # level3Result = ('Win', kbd)
+        
         self.background = pygame.transform.scale(pygame.image.load("door_bg.png"), (self.DISPLAY_W, self.DISPLAY_H))
         self.window.blit(self.background, (0,0))
 
@@ -58,9 +68,6 @@ class Game():
                 
                 self.background = pygame.transform.scale(pygame.image.load("page_1.png"), (self.DISPLAY_W, self.DISPLAY_H))
                 self.window.blit(self.background, (0,0))
-
-                # self.draw_text("JACOB: ...", 20, self.DISPLAY_W/2, self.DISPLAY_H/2)
-
                 pygame.display.update()
                 
                 if self.ESCAPE_KEY:
@@ -70,13 +77,10 @@ class Game():
                     self.reset_keys()
 
             if page == 2:
-            # reset the screen by setting it black since the frame before is not deleted
                 self.display.fill(self.BLACK)
-                
-                
+
                 self.background = pygame.transform.scale(pygame.image.load("page_2.png"), (self.DISPLAY_W, self.DISPLAY_H))   
                 self.window.blit(self.background, (0,0))
-                # self.draw_text("JACOB: Balla? Where are you?", 20, self.DISPLAY_W/2, self.DISPLAY_H/2)
                 pygame.display.update()
                 if self.START_KEY:
                     page = 3
@@ -88,18 +92,11 @@ class Game():
                 self.background = pygame.transform.scale(pygame.image.load("page_3.png"), (self.DISPLAY_W, self.DISPLAY_H))
                 self.window.blit(self.background, (0,0))
 
-                #self.draw_text("YOU FOUND A suspicious-looking letter on the bed...", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 - 60)
-                #self.draw_text("you pick it up and open it with no hesitation...", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 -30)
-                #self.draw_text("JACOB: Let's see what this is all about", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 +20)
-                
                 pygame.display.update()
                 
                 if self.START_KEY:
                     page = 4
                     self.reset_keys()
-
-                
-                
 
             if page == 4:
                 self.display.fill(self.BLACK)
@@ -180,14 +177,19 @@ class Game():
 
             if page == 10:
                 # level 4
-
-                self.display.fill(self.BLACK)
-                pygame.display.update()
-                if self.START_KEY:
+                level4 = Level4()
+                level4Result = level4.run(kbd)
+                # if return die go to page 16
+                if level4Result == "die":
+                    page = 16
+                elif level4Result == "win":
                     page = 11
-                    self.reset_keys()
+                elif level4Result == 'secret_ending':
+                    page = 17
+                
 
             if page == 11:
+                # end scene
                 self.display.fill(self.BLACK)
                 self.background = pygame.transform.scale(pygame.image.load("page_11.png"), (self.DISPLAY_W, self.DISPLAY_H))
                 self.window.blit(self.background, (0,0))
@@ -231,8 +233,34 @@ class Game():
                 if self.START_KEY:
                     self.playing = False
                     self.reset_keys()
+            
+            if page == 16:
+                # You died page from level 4
+                self.display.fill(self.BLACK)
+                self.background = pygame.transform.scale(pygame.image.load("page_16.png"), (self.DISPLAY_W, self.DISPLAY_H))
+                self.window.blit(self.background, (0,0))
+                pygame.display.update()
 
+                if self.KEY_R:
+                    page = 1
+                    self.reset_keys()
+                elif self.KEY_B: 
+                    self.playing = False
+                    self.reset_keys()
+            
+            if page == 17:
+                # Secret Ending
+                self.display.fill(self.BLACK)
+                self.background = pygame.transform.scale(pygame.image.load("page_17.png"), (self.DISPLAY_W, self.DISPLAY_H))
+                self.window.blit(self.background, (0,0))
+                pygame.display.update()
 
+                if self.KEY_R:
+                    page = 1
+                    self.reset_keys()
+                elif self.KEY_B: 
+                    self.playing = False
+                    self.reset_keys()
                 
     # check the player input to see what they press
     def check_events(self):
@@ -251,6 +279,11 @@ class Game():
                     self.UP_KEY = True
                 if event.key == pygame.K_ESCAPE:
                     self.ESCAPE_KEY = True
+                if event.key == pygame.K_r:
+                    self.KEY_R = True
+                if event.key == pygame.K_b:
+                    self.KEY_B = True
+                
 
     # set back to when they dont hold key
     def reset_keys(self):
@@ -258,7 +291,8 @@ class Game():
         set back to when they dont hold key
         """
         self.UP_KEY, self.DOWN_KEY, self.START_KEY, self.BACK_KEY, self.ESCAPE_KEY = False, False, False, False, False
-     
+        self.KEY_R, self.KEY_B = False, False
+
     def draw_text(self, text, size, x, y):
         """
         Show text on the screen

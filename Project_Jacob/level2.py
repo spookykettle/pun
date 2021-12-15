@@ -105,12 +105,14 @@ class Level2:
         self.window.blit(font_surface, (x,y))
     
     def YOU_DIED(self):
-        if self.is_won and self.winnerPlayer == "o":
+        if self.is_won and self.winnerPlayer != "x":
+            self.window.blit(self.background, (0,0))
             self.draw_text("YOU DIED", 80, (201, 0, 0), 45, 180)
             self.draw_text("better luck next time!", 20, (201, 0, 0), 90, 250)
             self.draw_text('press "r" to restart the game', 20, (255, 255, 255), 53, 300)
             self.draw_text('press "b" to go back to main menu', 20, (255, 255, 255), 35, 330)
 
+            pygame.display.update()
 
     def screenUpdate(self):
         self.window.blit(self.background, (0,0))
@@ -120,9 +122,6 @@ class Level2:
         if self.tie_count != 3:
             self.draw_text(f"GAME TIED: {self.TIE_COUNT_SHOW}", 25, (255, 221, 0), 245,422)
         
-        elif self.is_won and self.winnerPlayer == "o":
-            self.YOU_DIED()
-            
         pygame.display.update()
 
     def checkCenter(self):
@@ -181,8 +180,6 @@ class Level2:
 
         # if there's a winner
         if self.is_won:
-            # update screen - set to ttt background
-            self.screenUpdate()
             # remove tiles
             # if Jacob win
             if player == "x":
@@ -192,8 +189,10 @@ class Level2:
             else:
                 # set winner play to o
                 self.winnerPlayer = "o"
-                time.sleep(1)
                 self.square_group.empty()
+            
+            # # update screen - set to ttt background
+            # self.screenUpdate()
             
 
     def checkCorner(self):
@@ -211,7 +210,7 @@ class Level2:
 
     def run(self, kbd):
         self.window = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
-        pygame.display.set_caption("level 2")
+        pygame.display.set_caption("level II - tic-tac-toe")
         clock = pygame.time.Clock()
 
         self.mouse_pos = (0,0)
@@ -227,6 +226,7 @@ class Level2:
         
         # ----------------------------------------------------------------------
         while self.tie_count > 0:
+            clock.tick(60)
             # self.move = check whether the computer have to self.move or not
             self.move = True
             self.comp_move = 5
@@ -236,6 +236,7 @@ class Level2:
             self.square = []
             self.is_tie = False
             self.is_won = False
+            self.waiting_for_input = False
             self.board = ["" for i in range(10)]
 
             # create ttt board
@@ -251,10 +252,9 @@ class Level2:
             # start with player Jacob (player x)
             self.turn = "x"
 
-            # start game
             runn = True
             while runn:
-                clock.tick(60)
+                
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         runn = False
@@ -264,29 +264,41 @@ class Level2:
                         mx, my = pygame.mouse.get_pos()
                         for s in self.square:
                             s.clicked(mx, my, self)
+
                     if self.is_won and event.type == pygame.KEYUP:
-                            if event.key == pygame.K_r and self.winnerPlayer == "o":
+                            if event.key == pygame.K_r and self.winnerPlayer != "x":
                                 return ("restart", 0, False)
-                            elif event.key == pygame.K_b and self.winnerPlayer == "o":
+                            elif event.key == pygame.K_b and self.winnerPlayer != "x":
                                 return ("mainmenu", 0, False)
 
-                self.screenUpdate()
+                if (not self.waiting_for_input) and self.is_won and self.winnerPlayer != "x":
+                    self.YOU_DIED()
+                    # self.screenUpdate()
+                    self.waiting_for_input = True
+                    
+                elif not self.is_won:
+                    # start game
+                    self.screenUpdate()
+                
 
                 # if there's someone win
-                if (self.is_won and self.winnerPlayer == 'x') or self.is_tie:
-                    print(self.is_won)
+                # print('A')
+                if (self.is_won and self.winnerPlayer == 'x') or self.is_tie == True:
+
+                    # print('B', self.is_won, self.is_tie)
                     runn = False
+                # print('C', self.is_won, self.is_tie)
             
             # game end
             if self.is_won and self.winnerPlayer == "x":
                 kbd += random.randint(20,25)
                 return ("Win", kbd, True)
-            
+
             self.tie_count -= 1
             self.TIE_COUNT_SHOW += 1
            
             kbd += random.randint(10,20)
-            print(f'self.tie_count: {self.tie_count}')
+            print(f'self.tie_count: {self.tie_count}', 'winner:', self.winnerPlayer)
 
         return ("Tie", kbd, False)
 

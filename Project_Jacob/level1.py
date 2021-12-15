@@ -10,7 +10,7 @@ from pygame.event import event_name
 from pygame.locals import *
 
 class Level1:
-    def __init__(self) -> None:
+    def __init__(self):
         self.CURRENT_DIREC = os.getcwd()
         self.GAME_FOLDER = os.path.dirname(self.CURRENT_DIREC)
         self.IMG_FOLDER = os.path.join(self.GAME_FOLDER, "Project_Jacob")
@@ -65,7 +65,7 @@ class Level1:
     def run(self):
         
         self.screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
-        pygame.display.set_caption("mole")
+        pygame.display.set_caption("Level I - kill those minions")
         self.clock = pygame.time.Clock()
 
         # game variables

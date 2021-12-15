@@ -71,7 +71,7 @@ class Level3():
         print(f"Start lvl3 with {kbd} kbd")
         self.window = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
         clock = pygame.time.Clock()
-        pygame.display.set_caption("level 3")
+        pygame.display.set_caption("level III - Finding the door")
 
         # background
         self.background = pygame.transform.scale(pygame.image.load("door_bg.png"), (self.WIDTH, self.HEIGHT))
@@ -138,6 +138,7 @@ class Level3():
 
         runn = True
         while runn:
+            clock.tick(60)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.display.quit()

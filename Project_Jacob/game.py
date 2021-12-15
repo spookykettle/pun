@@ -31,7 +31,8 @@ class Game():
         self.running, self.playing = True, False
         self.UP_KEY, self.DOWN_KEY, self.START_KEY, self.BACK_KEY, self.ESCAPE_KEY = False, False, False, False, False
         self.DISPLAY_W, self.DISPLAY_H = 800, 800
-        self.display = pygame.Surface((self.DISPLAY_W, self.DISPLAY_H))
+        # self.display = pygame.Surface((self.DISPLAY_W, self.DISPLAY_H))
+        self.display = pygame.display.set_mode((self.DISPLAY_W, self.DISPLAY_H))
         self.window = pygame.display.set_mode(((self.DISPLAY_W, self.DISPLAY_H)))
         self.font_name = "victor-pixel.TTF"
         self.font_face = "pixel_invaders.TTF"
@@ -64,7 +65,6 @@ class Game():
 
             if page == 1:
                 self.display.fill(self.BLACK)
-                
                 self.background = pygame.transform.scale(pygame.image.load("page_1.png"), (self.DISPLAY_W, self.DISPLAY_H))
                 self.window.blit(self.background, (0,0))
                 pygame.display.update()

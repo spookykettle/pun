@@ -30,6 +30,8 @@ class MainMenu(Menu):
         self.exitx, self.exity = self.mid_w, self.mid_h + 90
         self.cursor_rect.midtop = (self.startx + self.offset, self.starty)
 
+        self.background = pygame.transform.scale(pygame.image.load("menu.png"), (self.game.DISPLAY_W, self.game.DISPLAY_H))
+
     def display_menu(self):
         """
         display the menu
@@ -38,7 +40,8 @@ class MainMenu(Menu):
         while self.run_display:
             self.game.check_events()
             self.check_input()
-            self.game.display.fill(self.game.BLACK)
+            self.game.window.blit(self.background, (0,0))
+            
             self.game.draw_text("Main Menu", 30, self.mid_w, self.mid_h -120)
             self.game.draw_text("Start Game", 20, self.startx, self.starty)
             self.game.draw_text("Controls", 20, self.controlx, self.controly)
@@ -96,39 +99,59 @@ class MainMenu(Menu):
 class ControlMenu(Menu):
     def __init__(self, game):
         Menu.__init__(self, game)
-        self.state = "Game Volume"
+        self.state = "Controls"
         self.volx, self.voly = self.mid_w, self.mid_h + 20
         self.controlsx, self.controlsy = self.mid_w, self.mid_h + 40
         self.cursor_rect.midtop = (self.volx + self.offset, self.voly)
+
+        self.background = pygame.transform.scale(pygame.image.load("creditandcontrol.png"), (self.game.DISPLAY_W, self.game.DISPLAY_H))
+        self.current_background = self.background
+
+        self.background_controls = pygame.transform.scale(pygame.image.load("controls.png"), (self.game.DISPLAY_W, self.game.DISPLAY_H))
+        self.background_gameplay = pygame.transform.scale(pygame.image.load("gameplay.png"), (self.game.DISPLAY_W, self.game.DISPLAY_H))
 
     def display_menu(self):
         self.run_display = True
         while self.run_display:
             self.game.check_events()
             self.check_input()
-            self.game.display.fill((0, 0, 0))
-            self.game.draw_text("Controls", 30, self.mid_w, self.mid_h - 30)
-            self.game.draw_text("Game Volume", 20, self.volx, self.voly)
-            self.game.draw_text("Gameplay", 20, self.controlsx, self.controlsy)
-            self.draw_cursor()
+            self.game.window.blit(self.current_background, (0,0))
+
+            if self.state != 'Control_Enter' and self.state != 'Gameplay_Enter':
+                self.game.draw_text("Controls", 30, self.mid_w, self.mid_h - 30)
+                self.game.draw_text("Controls", 20, self.volx, self.voly)
+                self.game.draw_text("Gameplay", 20, self.controlsx, self.controlsy)
+                self.draw_cursor()
+
             self.blit_screen()
 
     def check_input(self):
         """for control menu, player have to return to main menu"""
         if self.game.BACK_KEY:
-            self.game.curr_menu = self.game.main_menu
-            self.run_display = False
+            if self.state == "Control_Enter" or self.state == "Gameplay_Enter":
+                self.current_background = self.background
+            else:
+                self.game.curr_menu = self.game.main_menu
+                self.run_display = False
+
+            self.state = "Controls"
+
         elif self.game.UP_KEY or self.game.DOWN_KEY:
-            if self.state == 'Game Volume':
+            if self.state == 'Controls':
                 self.state = 'Gameplay'
                 self.cursor_rect.midtop = (self.controlsx + self.offset, self.controlsy)
             elif self.state == 'Gameplay':
-                self.state = 'Game Volume'
+                self.state = 'Controls'
                 self.cursor_rect.midtop = (self.volx + self.offset, self.voly)
         elif self.game.START_KEY:
-            # TO-DO: Create a Controls Menu
-            pass
+            if self.state == "Controls":
+                self.state = "Control_Enter"
+                self.current_background = self.background_controls
 
+            elif self.state == "Gameplay":
+                self.state = "Gameplay_Enter"
+                self.current_background = self.background_gameplay
+                
 class ExitMenu(Menu):
     def __init__(self, game):
         Menu.__init__(self, game)
@@ -136,13 +159,14 @@ class ExitMenu(Menu):
         self.yes_x, self.voly = self.mid_w, self.mid_h + 20
         self.no_x, self.controlsy = self.mid_w, self.mid_h + 40
         self.cursor_rect.midtop = (self.yes_x + self.offset, self.voly)
+        self.background = pygame.transform.scale(pygame.image.load("menu.png"), (self.game.DISPLAY_W, self.game.DISPLAY_H))
 
     def display_menu(self):
         self.run_display = True
         while self.run_display:
             self.game.check_events()
             self.check_input()
-            self.game.display.fill((0, 0, 0))
+            self.game.window.blit(self.background, (0,0))
             self.game.draw_text("DO YOU REALLY WANT TO EXIT?", 30, self.mid_w, self.mid_h - 30)
             self.game.draw_text("YES YES YES", 20, self.yes_x, self.voly)
             self.game.draw_text("NO NO NO", 20, self.no_x, self.controlsy)
@@ -173,6 +197,8 @@ class ExitMenu(Menu):
 class CreditsMenu(Menu):
     def __init__(self, game):
         Menu.__init__(self, game)
+        self.background = pygame.transform.scale(pygame.image.load("creditandcontrol.png"), (self.game.DISPLAY_W, self.game.DISPLAY_H))
+
 
     def display_menu(self):
         self.run_display = True
@@ -181,7 +207,7 @@ class CreditsMenu(Menu):
             if self.game.START_KEY or self.game.BACK_KEY:
                 self.game.curr_menu = self.game.main_menu
                 self.run_display = False
-            self.game.display.fill(self.game.BLACK)
+            self.game.window.blit(self.background, (0,0))
             self.game.draw_text('Credit', 30, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 20)
             self.game.draw_text('Made by Pun Rojanamontien (64011588)', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 + 10)
             self.blit_screen()

@@ -30,9 +30,9 @@ class Level1:
         self.COLUMN = 3
         self.ROW = 3
 
-        self.SECONDS_BEFORE_GAME_START = 1
-        self.SECONDS_PER_GAME = 5
-        self.MINIONS_TO_KILL = 1
+        self.SECONDS_BEFORE_GAME_START = 5
+        self.SECONDS_PER_GAME = 30
+        self.MINIONS_TO_KILL = 25
 
     def random_mole_position(self):
         self.random_grass = random.choice(self.grass_list_rect)

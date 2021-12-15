@@ -34,7 +34,6 @@ class Door_as_button():
         
         # check the boundary of mouse whether it is in picture area when clicked
         if position[0] in range(self.button_rect.left, self.button_rect.right) and position[1] in range(self.button_rect.top, self.button_rect.bottom):
-            print("button pressed")
             return True
         else:
             return False
@@ -162,8 +161,11 @@ class Level3():
                             self.window.blit(self.background, (0,0))
 
                         if self.room_number == self.MAX_ROOMS:
-                            self.focus_door_1 = self.blank_door
-                            self.focus_door_2 = self.blank_door
+                            if self.die == True:
+                                self.focus_door_1 = self.blank_door
+                                self.focus_door_2 = self.blank_door
+                            else:
+                                return 'Win'
                             
                         if self.room_number == 2:
                             # change to the new room's doors

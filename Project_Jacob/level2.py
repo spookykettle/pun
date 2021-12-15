@@ -76,6 +76,7 @@ class Level2:
             self.setBestMove("o")
         if self.move:
             self.checkDangerPos()
+
         if self.move == True:
             self.checkCenter()
         if self.move:
@@ -104,7 +105,7 @@ class Level2:
         self.window.blit(font_surface, (x,y))
     
     def YOU_DIED(self):
-        if self.winnerPlayer == "o":
+        if self.is_won and self.winnerPlayer == "o":
             self.draw_text("YOU DIED", 80, (201, 0, 0), 45, 180)
             self.draw_text("better luck next time!", 20, (201, 0, 0), 90, 250)
             self.draw_text('press "r" to restart the game', 20, (255, 255, 255), 53, 300)
@@ -119,7 +120,9 @@ class Level2:
         if self.tie_count != 3:
             self.draw_text(f"GAME TIED: {self.TIE_COUNT_SHOW}", 25, (255, 221, 0), 245,422)
         
-        self.YOU_DIED()
+        elif self.is_won and self.winnerPlayer == "o":
+            self.YOU_DIED()
+            
         pygame.display.update()
 
     def checkCenter(self):

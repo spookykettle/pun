@@ -58,7 +58,7 @@ class Game():
                 
                 self.background = pygame.transform.scale(pygame.image.load("page_1.png"), (self.DISPLAY_W, self.DISPLAY_H))
                 self.window.blit(self.background, (0,0))
-                
+
                 # self.draw_text("JACOB: ...", 20, self.DISPLAY_W/2, self.DISPLAY_H/2)
 
                 pygame.display.update()
@@ -105,10 +105,6 @@ class Game():
                 self.display.fill(self.BLACK)
                 self.background = pygame.transform.scale(pygame.image.load("page_4.png"), (self.DISPLAY_W, self.DISPLAY_H))
                 self.window.blit(self.background, (0,0))
-                
-                #self.draw_text_demon("I'M TAKING HER. DONT TRY TO FIND US", 30, self.DISPLAY_W/2, self.DISPLAY_H/2 - 100)  
-                #self.draw_text_demon("- ALMIGHTY DEMON LORD", 30, self.DISPLAY_W/2 + 70, self.DISPLAY_H/2 -65)
-                #self.draw_text("JACOB: OH NO! I NEED TO SAVE HER NOW!", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 +50)
                 pygame.display.update()
                 
                 if self.START_KEY:
@@ -119,15 +115,11 @@ class Game():
                 self.display.fill(self.BLACK)
                 self.background = pygame.transform.scale(pygame.image.load("page_5.png"), (self.DISPLAY_W, self.DISPLAY_H))
                 self.window.blit(self.background, (0,0))
-        
-                #self.draw_text("You travel miles and miles.. finally!", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 - 60)
-                #self.draw_text("You are here at the lord's castle!!", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 -30)
-                #self.draw_text("JACOB: Let's defeat the lord and take my bella back!", 20, self.DISPLAY_W/2, self.DISPLAY_H/2 +50)
-
                 pygame.display.update()
                 if self.START_KEY:
                     page = 6
                     self.reset_keys()
+
             if page == 6:
                 # level 1
                 level1 = Level1()
@@ -151,7 +143,7 @@ class Game():
                 level2 = Level2()
                 level2Result = level2.run(kbd)
                 # if tie three times go to next level with no hint
-                if level2Result == 'Tie':
+                if level2Result[0] == 'Tie':
                     page = 8
                 # if lost and want to go the main menu
                 elif level2Result[0] == "mainmenu":
@@ -160,7 +152,7 @@ class Game():
                 elif level2Result[0] == "restart":
                     page = 1
                 # if return win go to next level with hint
-                else:
+                elif level2Result[0] == "Win":
                     page = 8
                     
             if page == 8:
@@ -178,8 +170,70 @@ class Game():
                     page = 1
             
             if page == 9:
+                self.display.fill(self.BLACK)
+                self.background = pygame.transform.scale(pygame.image.load("page_9.png"), (self.DISPLAY_W, self.DISPLAY_H))
+                self.window.blit(self.background, (0,0))
+                pygame.display.update()
+                if self.START_KEY:
+                    page = 10
+                    self.reset_keys()
+
+            if page == 10:
                 # level 4
-                pass
+
+                self.display.fill(self.BLACK)
+                
+                pygame.display.update()
+                if self.START_KEY:
+                    page = 11
+                    self.reset_keys()
+
+            if page == 11:
+                self.display.fill(self.BLACK)
+                self.background = pygame.transform.scale(pygame.image.load("page_11.png"), (self.DISPLAY_W, self.DISPLAY_H))
+                self.window.blit(self.background, (0,0))
+                pygame.display.update()
+                if self.START_KEY:
+                    page = 12
+                    self.reset_keys()
+
+            if page == 12:
+                self.display.fill(self.BLACK)
+                self.background = pygame.transform.scale(pygame.image.load("page_12.png"), (self.DISPLAY_W, self.DISPLAY_H))
+                self.window.blit(self.background, (0,0))
+                pygame.display.update()
+                if self.START_KEY:
+                    page = 13
+                    self.reset_keys()
+            
+            if page == 13:
+                self.display.fill(self.BLACK)
+                self.background = pygame.transform.scale(pygame.image.load("page_13.png"), (self.DISPLAY_W, self.DISPLAY_H))
+                self.window.blit(self.background, (0,0))
+                pygame.display.update()
+                if self.START_KEY:
+                    page = 14
+                    self.reset_keys()
+            
+            if page == 14:
+                self.display.fill(self.BLACK)
+                self.background = pygame.transform.scale(pygame.image.load("page_14.png"), (self.DISPLAY_W, self.DISPLAY_H))
+                self.window.blit(self.background, (0,0))
+                pygame.display.update()
+                if self.START_KEY:
+                    page = 15
+                    self.reset_keys()
+            
+            if page == 15:
+                self.display.fill(self.BLACK)
+                self.background = pygame.transform.scale(pygame.image.load("page_15.png"), (self.DISPLAY_W, self.DISPLAY_H))
+                self.window.blit(self.background, (0,0))
+                pygame.display.update()
+                if self.START_KEY:
+                    self.playing = False
+                    self.reset_keys()
+
+
                 
     # check the player input to see what they press
     def check_events(self):

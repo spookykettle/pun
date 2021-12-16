@@ -148,7 +148,7 @@ class Level3:
 
                         if self.room_number > 1:
                             self.randomCorrectDoor()
-                            self.thePlayerState.kbd += random.randint(10,15)
+                            self.thePlayerState.kbd += random.randint(15,30)
 
                         if self.die == True:
                             # last door

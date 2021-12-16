@@ -13,7 +13,6 @@ from player_status import TheJacob
 
 class Character:
     COOLDOWN = 30
-
     def __init__(self, x_pos, y_pos, health=100, step_velocity=5):
         super().__init__()
 
@@ -491,7 +490,7 @@ if __name__ == "__main__":
     game = Level4()
 
     playerState = TheJacob()
-    playerState.kbd = 7
+    playerState.kbd = 100
     playerState.print_game_state()
 
     result = game.run(playerState)

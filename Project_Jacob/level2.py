@@ -95,12 +95,11 @@ class Level2:
             # exit level3, go to level 3
             self.screenUpdate()
             time.sleep(1)
-           
             # empty otherwise it will be on the screen infront of self.background
             self.square_group.empty()
-
             print('Tie! try again')
             self.is_tie = True
+
                 
     def draw_text(self, text, font_size, font_color, x, y):
         font = pygame.font.Font("victor-pixel.ttf", font_size)
@@ -252,7 +251,6 @@ class Level2:
 
                 # if there's someone win
                 if (self.is_won and self.winnerPlayer == 'x') or self.is_tie == True:
-
                     # print('B', self.is_won, self.is_tie)
                     runn = False
                     return ("Win", True)
@@ -319,13 +317,13 @@ class Level2:
 
             # game end
             if self.is_won and self.winnerPlayer == "x":
-                self.thePlayerState.kbd += random.randint(20,25)
+                self.thePlayerState.kbd += random.randint(70,80)
                 return ("Win", True)
 
             self.tie_count -= 1
             self.TIE_COUNT_SHOW += 1
            
-            self.thePlayerState.kbd += random.randint(10,20)
+            self.thePlayerState.kbd += random.randint(30,35)
             print(f'self.tie_count: {self.tie_count}', 'winner:', self.winnerPlayer)
 
         return ("Tie", False)

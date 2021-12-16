@@ -77,6 +77,9 @@ class Level1:
                     run = False
                 mouse_pos = pygame.mouse.get_pos()
                 self.sword_rect.center = (mouse_pos[0], mouse_pos[1])
+                # to check if mouse is visible them set it as invisible
+                if pygame.mouse.get_visible():
+                    pygame.mouse.set_visible(False)
                 if event.type == MOUSEBUTTONDOWN:
                     if event.button == 1 and not self.game_over:
                         if self.mole_rect.collidepoint(mouse_pos):

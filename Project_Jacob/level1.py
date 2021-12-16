@@ -115,7 +115,6 @@ class Level1:
                     elif event.key == K_m and self.game_over:
                         # go to main menu
                         return "mainmenu"
-                        # ยังไม่ได้ลองรันเพราะตอนตายไม่ขึ้น
 
                 if event.type == MOUSEMOTION:
                     self.thePlayerState.button.button_hover(mouse_pos)

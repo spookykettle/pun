@@ -1,6 +1,5 @@
 import pygame
 import os
-import random
 
 from os import path
 from pygame import draw

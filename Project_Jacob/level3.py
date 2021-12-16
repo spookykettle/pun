@@ -1,11 +1,10 @@
 """Level 3 choose the door"""
 
 import pygame
-from os import path
 import os
-import time
 import random
 
+from os import path
 from random import choice
 from pygame.constants import MOUSEBUTTONDOWN, MOUSEMOTION
 
@@ -134,7 +133,7 @@ class Level3:
                     # if click kbd button
                     if event.button == 1 and self.thePlayerState.button.mouse_is_inside(mouse_pos):
                         self.thePlayerState.run()
-                    
+
                     # if click door
                     if ((self.which_door == 1) and self.focus_door_1.button_check_input(mouse_pos)) \
                         or ((self.which_door == 2) and self.focus_door_2.button_check_input(mouse_pos)):

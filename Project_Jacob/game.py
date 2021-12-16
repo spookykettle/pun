@@ -1,15 +1,15 @@
 """Project: Jacob"""
 
 import pygame
-from pygame.event import Event
-from menu import *
-
 import pygame
 import os
 
+from pygame.event import Event
+from menu import *
 from os import path
 from pygame.locals import *
 
+# Files
 from level1 import Level1
 from level2 import Level2
 from level3 import Level3
@@ -17,7 +17,6 @@ from level4 import Level4
 
 from player_status import TheJacob
 
-from subprocess import call
 
 class Game():
     def __init__(self):

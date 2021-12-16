@@ -71,7 +71,13 @@ class Level3:
         self.window.blit(self.current_background, (0,0))
 
         if self.startWithHint:
-            if self.room_number == 2:
+            if self.room_number == 1:
+                if self.which_door == 1:
+                    self.window.blit(self.hint, (200,20))
+                    #startWithHint == False
+                elif self.which_door == 2:
+                    self.window.blit(self.hint, (550,20))
+            elif self.room_number == 2:
                 if self.which_door == 1:
                     self.window.blit(self.hint, (160,20))
                     #startWithHint == False
@@ -90,16 +96,10 @@ class Level3:
         self.focus_door_2.button_update(self)
 
     def _run(self):
-        self.window.blit(self.current_background, (0,0))
+        # self.window.blit(self.current_background, (0,0))
         hide_kbd_button_die = False
 
-        if self.startWithHint:
-            if self.which_door == 1:
-                self.window.blit(self.hint, (200,20))
-                #startWithHint == False
-            elif self.which_door == 2:
-                self.window.blit(self.hint, (550,20))
-                #startWithHint == False
+        self.refreshBackground()
 
         runn = True
         while runn:
@@ -134,7 +134,7 @@ class Level3:
                     # if click kbd button
                     if event.button == 1 and self.thePlayerState.button.mouse_is_inside(mouse_pos):
                         self.thePlayerState.run()
-
+                    
                     # if click door
                     if ((self.which_door == 1) and self.focus_door_1.button_check_input(mouse_pos)) \
                         or ((self.which_door == 2) and self.focus_door_2.button_check_input(mouse_pos)):
@@ -142,10 +142,14 @@ class Level3:
                         # open the correct door -> to the boss room
                         return 'Win'
 
-                    else:
+                    elif self.focus_door_1.button_check_input(mouse_pos) or \
+                        self.focus_door_2.button_check_input(mouse_pos):
+                        
                         self.room_number += 1
-                        self.randomCorrectDoor()
-                        self.thePlayerState.kbd += random.randint(10,15)
+
+                        if self.room_number > 1:
+                            self.randomCorrectDoor()
+                            self.thePlayerState.kbd += random.randint(10,15)
 
                         if self.die == True:
                             # last door
@@ -158,7 +162,7 @@ class Level3:
                                 self.focus_door_1 = self.blank_door
                                 self.focus_door_2 = self.blank_door
                                 hide_kbd_button_die = True
-                                self.refreshBackground()
+                                # self.refreshBackground()
                             else:
                                 return 'Win'
                             
@@ -182,7 +186,7 @@ class Level3:
     def run(self, startWithHint:bool = False, thePlayerState:TheJacob = None):
         self.thePlayerState = thePlayerState
         self.thePlayerState.set_game_level(self)
-        self.thePlayerState.set_back_to_game_screen_function(self._run)
+        self.thePlayerState.set_back_to_game_screen_function(self.refreshBackground)
 
         print("Start lvl3 with hint" if startWithHint else 'Start lvl3 without hint')
         print(f"Start lvl3 with {self.thePlayerState.kbd} kbd")

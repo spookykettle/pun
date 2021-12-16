@@ -139,7 +139,7 @@ class TheJacob:
                         if event.key == pygame.K_b:
                             runn = False
                             self.return_key_pressed = 'B'
-
+        
         self.back_to_game_screen()
         return self.is_dead_by_insanity()
 

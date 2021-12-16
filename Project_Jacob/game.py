@@ -26,7 +26,7 @@ class Game():
         self.GAME_FOLDER = os.path.dirname(self.CURRENT_DIREC)
         self.IMG_FOLDER = os.path.join(self.GAME_FOLDER, "Project_Jacob")
 
-        # running variable true when the game is on, may be game is on but not playing
+        # running variable true when the game is on, may be game is on but not plzaying
         self.running, self.playing = True, False
         self.UP_KEY, self.DOWN_KEY, self.START_KEY, self.BACK_KEY, self.ESCAPE_KEY = False, False, False, False, False
         self.DISPLAY_W, self.DISPLAY_H = 800, 800

@@ -101,20 +101,21 @@ class Level1:
                         self.sword_img = self.sword[0]
                 if event.type == KEYUP:
                     # i add p secretly so i can use it on the presentation
-                    if event.key == K_r:
-                        # go to the first scene of the game
-                        return "restart"
                         
-                    elif event.key == K_p:
+                    if event.key == K_p:
                         self.countdown = self.SECONDS_BEFORE_GAME_START
                         self.score = 0
                         self.pos = 0
                         self.thePlayerState.kbd = 0
                         self.count_down = self.SECONDS_PER_GAME
                         self.game_over = False
-                    elif event.key == K_m and self.game_over:
+                    elif event.key == K_b and self.game_over:
                         # go to main menu
                         return "mainmenu"
+
+                    elif event.key == K_r and self.game_over:
+                        # go to the first scene of the game
+                        return "restart"
 
                 if event.type == MOUSEMOTION:
                     self.thePlayerState.button.button_hover(mouse_pos)

@@ -30,7 +30,7 @@ class Level1:
         self.COLUMN = 3
         self.ROW = 3
 
-        self.SECONDS_BEFORE_GAME_START = 5
+        self.SECONDS_BEFORE_GAME_START = 7
         self.SECONDS_PER_GAME = 30
         self.MINIONS_TO_KILL = 25
 
@@ -66,6 +66,11 @@ class Level1:
     def _run(self):
         run = True
         while run:
+            if self.thePlayerState.level1_second > 0 and self.countdown <= 0:
+                # self.draw_text(f'+ {self.thePlayerState.level1_second}', 30, (0, 0, 0), self.WIDTH/2- 50, 10)
+                self.count_down += self.thePlayerState.level1_second
+                self.thePlayerState.level1_second -= self.thePlayerState.level1_second
+
             if self.thePlayerState.is_dead_by_insanity():
                 self.game_over = True
                 return "Insane"
@@ -93,15 +98,15 @@ class Level1:
                         self.sword_img = self.sword[1]
                     
                     # click the kbd button
-                    if event.button == 1 and self.thePlayerState.button.mouse_is_inside(mouse_pos):
+                    if event.button == 1 and self.thePlayerState.button.mouse_is_inside(mouse_pos) and self.game_over == False:
                         self.thePlayerState.run()
 
                 if event.type == MOUSEBUTTONUP:
                     if event.button == 1:
                         self.sword_img = self.sword[0]
+                        
                 if event.type == KEYUP:
                     # i add p secretly so i can use it on the presentation
-                        
                     if event.key == K_p:
                         self.countdown = self.SECONDS_BEFORE_GAME_START
                         self.score = 0
@@ -117,7 +122,7 @@ class Level1:
                         # go to the first scene of the game
                         return "restart"
 
-                if event.type == MOUSEMOTION:
+                if event.type == MOUSEMOTION and self.game_over == False:
                     self.thePlayerState.button.button_hover(mouse_pos)
 
             if not self.thePlayerState.is_dead_by_insanity():
@@ -130,7 +135,7 @@ class Level1:
                     self.draw_text(f"Kibidango: {self.thePlayerState.kbd}", 30, self.black, self.WIDTH/2 +120, 725)
                 else:
                     self.draw_text('LEVEL ONE', 60, self.black, self.WIDTH/2 -20, 620)
-                    self.draw_text('KILL 25 MINIONS', 40, self.BLUE, self.WIDTH/2 -25, 675)
+                    self.draw_text(f'KILL {self.MINIONS_TO_KILL} MINIONS', 40, self.BLUE, self.WIDTH/2 -25, 675)
                     if self.countdown > 9:
                         self.draw_text(str(self.countdown), 30, (122, 108, 0), 735, 740)
                     else:
@@ -163,7 +168,8 @@ class Level1:
 
                 self.draw_grass()
 
-                self.thePlayerState.button.button_update()
+                if self.game_over == False:
+                    self.thePlayerState.button.button_update()
             
                 if self.count_down == 0:
                     if self.score < self.MINIONS_TO_KILL:
@@ -228,11 +234,9 @@ if __name__ == "__main__":
 
     playerState = TheJacob()
     playerState.set_game_level(game)
-    playerState.kbd=20
+    playerState.kbd = 20
     playerState.print_game_state()
 
     game.run(playerState)
-
-    
     print("Insame key pressed?", playerState.return_key_pressed)
     pygame.quit()

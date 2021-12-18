@@ -47,8 +47,10 @@ class TheJacob:
         self.insanity_state = 1
         self.game = None
         self.game_screen_refresh_function = None
+        self.level1_second = 0
 
         self.return_key_pressed = None
+
 
         self.set_button()
         self.update_insanity_image()
@@ -56,6 +58,8 @@ class TheJacob:
     def __init__(self) -> None:
         self.DISPLAY_W = 800
         self.DISPLAY_H = 800
+
+        self.level1_second = 0
 
         self.CURRENT_DIREC = os.getcwd()
         self.GAME_FOLDER = os.path.dirname(self.CURRENT_DIREC)
@@ -92,6 +96,7 @@ class TheJacob:
         if self.kbd > 0:
             self.kbd -= 1
             self.insanity_state += 1
+            self.level1_second += 3
             self.update_insanity_image()
     
     def is_dead_by_insanity(self):
@@ -108,7 +113,13 @@ class TheJacob:
     def refresh_background(self):
         self.background = self.current_image
         self.game.window.blit(self.background, (0,0))
+        self.draw_text(f'Kibidango Left: {self.kbd}', 26, (0, 0, 0), 516, 13)
         pygame.display.update()
+    
+    def draw_text(self, text, font_size, font_color, x, y):
+        font = pygame.font.Font("victor-pixel.ttf", font_size)
+        font_surface = font.render(text, True, font_color)
+        self.game.window.blit(font_surface, (x,y))
 
     def run(self):
         self.refresh_background()
